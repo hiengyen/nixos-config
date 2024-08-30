@@ -217,6 +217,7 @@
     gnomeExtensions.logo-menu
     gnomeExtensions.just-perfection
     gnomeExtensions.gnome-40-ui-improvements
+    gnomeExtensions.gsconnect
     #systemPackages
     pciutils
     busybox
@@ -285,6 +286,7 @@
     gotools
     python3
     # Rust & dependencies
+    rustc
     rustup
     cargo
     #LSP & Formatter NixOS
