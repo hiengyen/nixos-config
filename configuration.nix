@@ -2,11 +2,12 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./containers.nix
       ./unstable-channel-pkgs.nix
@@ -15,7 +16,7 @@
   # Bootloader.(systemd default) 
   boot.loader.systemd-boot.enable = false;
   #boot.loader.efi.canTouchEfiVariables = true;
-  
+
   #Grub Bootloader # For dual Boot with Windows
   boot.loader = {
     efi = {
@@ -52,7 +53,7 @@
       version = 2;
     };
   };
-  
+
   # Fix incorrect time when booting Windows
   time.hardwareClockInLocalTime = true;
 
@@ -63,12 +64,19 @@
   # Configure network proxy if necessary
   # networking.proxy.default = "http://26.223.237.35:10809/";
   # networking.proxy.noProxy = "27.0.0.1,localhost,internal.domain";
+  # networking.proxy = {
+  #   default = "http://192.168.92.242:10809";
+  #   httpProxy = "http://192.168.92.242:10809";
+  #   httpsProxy = "http://192.168.92.242:10809";
+  #   noProxy = "localhost,127.0.0.1,.example.com"; 
+  # };
+
 
   # Enable networking
   networking.networkmanager.enable = true;
 
   # Enable Hotspot
- 
+
   #Enable Bluetooth
   hardware.bluetooth.enable = true; # enables support for Bluetooth
   hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
@@ -83,7 +91,7 @@
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
-  i18n.extraLocaleSettings = { 
+  i18n.extraLocaleSettings = {
     LC_ADDRESS = "vi_VN";
     LC_IDENTIFICATION = "vi_VN";
     LC_MEASUREMENT = "vi_VN";
@@ -104,9 +112,9 @@
 
   #Install fonts
   fonts.packages = with pkgs; [
-  fira-code
-  fira-code-symbols
-  fira-code-nerdfont
+    fira-code
+    fira-code-symbols
+    fira-code-nerdfont
   ];
 
   # Enable the X11 windowing system.
@@ -115,7 +123,6 @@
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-
 
   # Install Displaylink Driver
   services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
@@ -127,6 +134,16 @@
   programs.virt-manager.enable = true;
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true;
+  virtualisation.libvirtd.qemu.ovmf.packages = [
+    pkgs.pkgsCross.aarch64-multiplatform.OVMF.fd #AAVMF
+    pkgs.OVMF.fd
+  ];
+
+  ## Run binaries of different architecture
+  boot.binfmt.emulatedSystems = [
+    "aarch64-linux"
+    "riscv64-linux"
+  ];
 
   # Enable Flatpak 
   services.flatpak.enable = true;
@@ -139,19 +156,10 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+  services.printing.drivers = [ pkgs.brlaser ];
 
   # Enable Teamviewer services
   services.teamviewer.enable = true;
-
-  # Enable ALSA sound
-  sound.enable = true;
-  hardware.enableAllFirmware = true;
-
-  # Enable sound with pulseaudio
-  # hardware.pulseaudio.enable = true; 
-  # hardware.pulseaudio.support32Bit = true;
-  # nixpkgs.config.pulseaudio = true;
-  # hardware.pulseaudio.extraConfig = "load-module module-combine-sink";
 
   # Enable sound with Pipewire.
   hardware.pulseaudio.enable = false; # turn off Pipewire audio
@@ -177,7 +185,7 @@
   users.users.hiengyen = {
     isNormalUser = true;
     description = "hiengyen";
-    extraGroups = [ "networkmanager" "wheel" "libvirtd" "dialout" "audio"];
+    extraGroups = [ "networkmanager" "wheel" "libvirtd" "dialout" "audio" "kvm" ];
     # packages = with pkgs; [
     #  thunderbird
     # ];
@@ -192,98 +200,136 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  # Gnome Extensions
-  gnomeExtensions.caffeine
-	gnomeExtensions.vitals
-  gnomeExtensions.clipboard-indicator
-  gnomeExtensions.appindicator
-  gnomeExtensions.astra-monitor
-  gnomeExtensions.miniview
-  gnomeExtensions.privacy-settings-menu
-  gnomeExtensions.logo-menu
-  gnomeExtensions.just-perfection
-  gnomeExtensions.gnome-40-ui-improvements
-  #systemPackages
-  pciutils
-  busybox
-  unzip
-  usbutils
-  wirelesstools
-  gtop
-  wget
-	vim
-	#neovim
-	timeshift
-	git
-  gcc
-  yarn
-  libgcc
-  mpfr
-  gmp
-  libmpc
-  haskellPackages.gdp
-  gnumake42# make
-  perl
-	curl
-  wl-clipboard
-  xclip
-	neofetch
-	kitty
-	zsh
-	distrobox
-	google-chrome
-	gnome.gnome-tweaks
-	dbeaver-bin
-	ciscoPacketTracer8
-  anki-bin
-  mpv
-  mplayer
-  vlc
-  tmux
-  tmuxifier
-  libreoffice
-  obs-studio
-  jetbrains.idea-community-bin
-  arduino-ide
-  arduino-cli
-  teamviewer
-  gparted
-  mongodb-compass
-  obsidian
-  stow
-  dialect # A translation app for GNOME
-  gitkraken # Git client 
+    # Always starts QEMU with OVMF firmware implementing UEFI support
+    (pkgs.writeShellScriptBin "qemu-system-x86_64-uefi" ''
+      qemu-system-x86_64 \
+      -bios ${pkgs.OVMF.fd}/FV/OVMF.fd \
+      "$@"
+    '')
+    # Gnome Extensions
+    gnomeExtensions.caffeine
+    gnomeExtensions.vitals
+    gnomeExtensions.clipboard-indicator
+    gnomeExtensions.appindicator
+    gnomeExtensions.astra-monitor
+    gnomeExtensions.miniview
+    gnomeExtensions.privacy-settings-menu
+    gnomeExtensions.logo-menu
+    gnomeExtensions.just-perfection
+    gnomeExtensions.gnome-40-ui-improvements
+    #systemPackages
+    pciutils
+    busybox
+    unzip
+    usbutils
+    libinput
+    wirelesstools
+    gtop
+    wget
+    vim
+    #neovim
+    git
+    gcc
+    yarn
+    libgcc
+    mpfr
+    gmp
+    libmpc
+    haskellPackages.gdp
+    gnumake42 # make
+    perl
+    curl
+    wl-clipboard
+    xclip
+    neofetch
+    kitty
+    zsh
+    distrobox
+    google-chrome
+    gnome.gnome-tweaks
+    dbeaver-bin
+    ciscoPacketTracer8
+    anki-bin
+    mpv
+    mplayer
+    vlc
+    tmux
+    tmuxifier
+    libreoffice
+    obs-studio
+    jetbrains.idea-community-bin
+    arduino-ide
+    arduino-cli
+    teamviewer
+    gparted
+    mongodb-compass
+    obsidian
+    stow
+    gittyup # Git client 
+    wineWowPackages.stable
+    winetricks
+    samba
 
-  # Lazy.nvim dependencies
-  fzf
-  fzf-zsh
-  fd
-  ripgrep
-	yaru-theme
-	nerdfonts
-  luajitPackages.luarocks
-  #Programming Languages
-  nodejs_20
-  go
-  gotools
-  python3
-  # Rust & dependencies
-  rustup
-  cargo
-  #LSP & Formatter NixOS
-  nil
-  nixpkgs-fmt
+    # Lazy.nvim dependencies
+    fzf
+    fzf-zsh
+    fd
+    ripgrep
+    yaru-theme
+    nerdfonts
+    luajitPackages.luarocks
+    #Programming Languages
+    nodejs_20
+    corepack # wrappers for npm, pnpm and Yarn 
+    go
+    gotools
+    python3
+    # Rust & dependencies
+    rustup
+    cargo
+    #LSP & Formatter NixOS
+    nil
+    nixpkgs-fmt
+    #Gaming Pkgs
+
+    # steam-run
+    # protonup
   ];
+  # Install steam and steam run
 
+  # programs.steam = {
+  #   enable = true;
+  #   remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+  #   dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  # };
 
+  ## Install  unfree packages (Ideal)
+  # nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+  #   "steam"
+  #   "steam-original"
+  #   "steam-run"
+  # ];
+  #
+  # # Enable the option below to ensure the mouse doesn’t disappear when playing the game.
+  # environment.sessionVariables = {
+  #   WLR_NO_HARDWARE_CURSORS = "1";
+  # };
+  # # Add path to compatibility tool for steam
+  # environment.sessionVariables = {
+  #   STEAM_EXTRA_COMPAT_TOOLS_PATHS = "/home/hiengyen/.steam/root/compatibilitytools.d";
+  # };
 
   ## Remove unuse pkg, service on NixOS Gnome
   environment.gnome.excludePackages = (with pkgs; [
-  gnome-tour
-  nixos-render-docs
+    gnome-tour
+    gnome-connections
+    nixos-render-docs
   ]) ++ (with pkgs.gnome; [
-  gnome-music
-  cheese # webcam tool
+    gnome-music
+    gnome-contacts
+    gnome-maps
+    gnome-weather
+    cheese # webcam tool
     epiphany # web browser
     geary # email reader
     totem # video player
@@ -302,11 +348,24 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-   services.openssh.enable = true;
-   
+  services.openssh.enable = true;
+
+  # Setting up udev rules
+  # services.udev.extraRules = [
+  # ''ACTION=="add"''
+  # ''SUBSYSTEM=="pci"''
+  # ''ATTR{vendor}=="0x1022"''
+  # ''ATTR{device}=="0x1483"''
+  # ''ATTR{power/wakeup}="disabled"''
+  # ''''
+  # ''KERNEL="event*"''
+  # ''ATTRS { name }="AT Translated Set 2 keyboard"''
+  # ''ENV{ LIBINPUT_IGNORE_DEVICE }="1"''
+  # ];
+
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedTCPPorts = [80 443 22];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
@@ -320,3 +379,6 @@
   system.stateVersion = "24.05"; # Did you read the comment?
 }
  
+
+
+
