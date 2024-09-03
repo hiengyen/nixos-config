@@ -9,11 +9,14 @@
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./containers.nix
-      ./unstable-channel-pkgs.nix
+      ./modules/containers.nix
+      ./modules/unstable-channel-pkgs.nix
+      ./modules/nix-ld-channel-pkgs.nix
+      ./modules/2405-stable-pkgs.nix
+      ./modules/exclude-Gnome-pkgs.nix
     ];
 
-  # Bootloader.(systemd default) 
+  # Bootloader.(systemd default)
   boot.loader.systemd-boot.enable = false;
   #boot.loader.efi.canTouchEfiVariables = true;
 
@@ -92,16 +95,17 @@
   i18n.defaultLocale = "en_US.UTF-8";
 
   i18n.extraLocaleSettings = {
-    LC_ADDRESS = "vi_VN";
-    LC_IDENTIFICATION = "vi_VN";
-    LC_MEASUREMENT = "vi_VN";
-    LC_MONETARY = "vi_VN";
-    LC_NAME = "vi_VN";
-    LC_NUMERIC = "vi_VN";
-    LC_PAPER = "vi_VN";
-    LC_TELEPHONE = "vi_VN";
-    LC_TIME = "vi_VN";
+    LC_ADDRESS = "en_US.UTF-8";
+    LC_IDENTIFICATION = "en_US.UTF-8";
+    LC_MEASUREMENT = "en_US.UTF-8";
+    LC_MONETARY = "en_US.UTF-8";
+    LC_NAME = "en_US.UTF-8";
+    LC_NUMERIC = "en_US.UTF-8";
+    LC_PAPER = "en_US.UTF-8";
+    LC_TELEPHONE = "en_US.UTF-8";
+    LC_TIME = "en_US.UTF-8";
   };
+
 
   i18n.inputMethod = {
     enabled = "ibus";
@@ -112,9 +116,15 @@
 
   #Install fonts
   fonts.packages = with pkgs; [
-    fira-code
-    fira-code-symbols
-    fira-code-nerdfont
+    noto-fonts
+    noto-fonts-cjk
+    noto-fonts-emoji
+    liberation_ttf
+    mplus-outline-fonts.githubRelease
+    dina-font
+    proggyfonts
+    vistafonts
+    corefonts
   ];
 
   # Enable the X11 windowing system.
@@ -162,8 +172,8 @@
   services.teamviewer.enable = true;
 
   # Enable sound with Pipewire.
-  hardware.pulseaudio.enable = false; # turn off Pipewire audio
-  # rtkit is optional but recommended
+  sound.enable = true;
+  hardware.pulseaudio.enable = false; # turn off Pulse audio
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -171,7 +181,7 @@
     alsa.support32Bit = true;
     pulse.enable = true;
     #If you want to use JACK applications, uncomment this
-    jack.enable = true;
+    #jack.enable = true;
 
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
@@ -197,147 +207,6 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    # Always starts QEMU with OVMF firmware implementing UEFI support
-    (pkgs.writeShellScriptBin "qemu-system-x86_64-uefi" ''
-      qemu-system-x86_64 \
-      -bios ${pkgs.OVMF.fd}/FV/OVMF.fd \
-      "$@"
-    '')
-    # Gnome Extensions
-    gnomeExtensions.caffeine
-    gnomeExtensions.vitals
-    gnomeExtensions.clipboard-indicator
-    gnomeExtensions.appindicator
-    gnomeExtensions.astra-monitor
-    gnomeExtensions.miniview
-    gnomeExtensions.privacy-settings-menu
-    gnomeExtensions.logo-menu
-    gnomeExtensions.just-perfection
-    gnomeExtensions.gnome-40-ui-improvements
-    gnomeExtensions.gsconnect
-    #systemPackages
-    pciutils
-    busybox
-    unzip
-    usbutils
-    libinput
-    wirelesstools
-    gtop
-    wget
-    vim
-    #neovim
-    git
-    gcc
-    yarn
-    libgcc
-    mpfr
-    gmp
-    libmpc
-    haskellPackages.gdp
-    gnumake42 # make
-    perl
-    curl
-    wl-clipboard
-    xclip
-    neofetch
-    kitty
-    zsh
-    distrobox
-    google-chrome
-    gnome.gnome-tweaks
-    dbeaver-bin
-    ciscoPacketTracer8
-    anki-bin
-    mpv
-    mplayer
-    vlc
-    tmux
-    tmuxifier
-    libreoffice
-    obs-studio
-    jetbrains.idea-community-bin
-    arduino-ide
-    arduino-cli
-    teamviewer
-    gparted
-    mongodb-compass
-    obsidian
-    stow
-    gittyup # Git client 
-    wineWowPackages.stable
-    winetricks
-    samba
-
-    # Lazy.nvim dependencies
-    fzf
-    fzf-zsh
-    fd
-    ripgrep
-    yaru-theme
-    nerdfonts
-    luajitPackages.luarocks
-    #Programming Languages
-    nodejs_20
-    corepack # wrappers for npm, pnpm and Yarn 
-    go
-    gotools
-    python3
-    # Rust & dependencies
-    rustc
-    rustup
-    cargo
-    #LSP & Formatter NixOS
-    nil
-    nixpkgs-fmt
-    #Gaming Pkgs
-
-    # steam-run
-    # protonup
-  ];
-  # Install steam and steam run
-
-  # programs.steam = {
-  #   enable = true;
-  #   remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-  #   dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-  # };
-
-  ## Install  unfree packages (Ideal)
-  # nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-  #   "steam"
-  #   "steam-original"
-  #   "steam-run"
-  # ];
-  #
-  # # Enable the option below to ensure the mouse doesn’t disappear when playing the game.
-  # environment.sessionVariables = {
-  #   WLR_NO_HARDWARE_CURSORS = "1";
-  # };
-  # # Add path to compatibility tool for steam
-  # environment.sessionVariables = {
-  #   STEAM_EXTRA_COMPAT_TOOLS_PATHS = "/home/hiengyen/.steam/root/compatibilitytools.d";
-  # };
-
-  ## Remove unuse pkg, service on NixOS Gnome
-  environment.gnome.excludePackages = (with pkgs; [
-    gnome-tour
-    gnome-connections
-    nixos-render-docs
-  ]) ++ (with pkgs.gnome; [
-    gnome-music
-    gnome-contacts
-    gnome-maps
-    gnome-weather
-    cheese # webcam tool
-    epiphany # web browser
-    geary # email reader
-    totem # video player
-  ]);
-  services.xserver.excludePackages = with  pkgs; [ xterm ];
-  ##
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
