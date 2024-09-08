@@ -137,6 +137,12 @@
   # Install Displaylink Driver
   services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
 
+  # Enable RDP (freerdp) - Remote Desktop Protocol
+  services.gnome.gnome-remote-desktop.enable = true;
+  services.xrdp.enable = true;
+  services.xrdp.defaultWindowManager = "gnome-remote-desktop";
+  services.xrdp.openFirewall = true;
+
   #Install Hypervisor
   boot.kernelModules = [ "kvm-amd" "kvm-intel" ];
   # Install Virt-manager 
@@ -192,10 +198,13 @@
   services.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwdstable’.
+  # users.users.hiengyen.group = "hiengyen";
+  # users.groups.hiengyen = { };
+
   users.users.hiengyen = {
     isNormalUser = true;
     description = "hiengyen";
-    extraGroups = [ "networkmanager" "wheel" "libvirtd" "dialout" "audio" "kvm" ];
+    extraGroups = [ "sudo" "networkmanager" "wheel" "libvirtd" "dialout" "audio" "kvm" ];
     # packages = with pkgs; [
     #  thunderbird
     # ];

@@ -82,6 +82,8 @@
     wineWowPackages.stable
     winetricks
     samba
+    freerdp # Remote Desktop Protocol Client
+    rpi-imager
 
     # Lazy.nvim dependencies
     fzf
@@ -104,6 +106,7 @@
     #LSP & Formatter NixOS
     nil
     nixpkgs-fmt
+
     #Steam Pkgs
     # steam-run
     # protonup
