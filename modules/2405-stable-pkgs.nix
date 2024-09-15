@@ -19,7 +19,6 @@
     # Gnome Extensions
     gnomeExtensions.caffeine
     gnomeExtensions.vitals
-    gnomeExtensions.clipboard-indicator
     gnomeExtensions.appindicator
     gnomeExtensions.astra-monitor
     gnomeExtensions.miniview
@@ -84,6 +83,7 @@
     samba
     freerdp # Remote Desktop Protocol Client
     rpi-imager
+    realvnc-vnc-viewer # one type of Remote Desktop
 
     # Lazy.nvim dependencies
     fzf
