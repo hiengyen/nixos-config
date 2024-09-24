@@ -2,9 +2,12 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, lib, pkgs, ... }:
+# { config, lib, pkgs, ... }:
+
+{ pkgs, ... }:
 
 {
+
   imports =
     [
       # Include the results of the hardware scan.
@@ -13,12 +16,22 @@
       ./modules/unstable-channel-pkgs.nix
       ./modules/nix-ld-channel-pkgs.nix
       ./modules/2405-stable-pkgs.nix
-      ./modules/exclude-Gnome-pkgs.nix
+      # ./modules/exclude-gnome-pkgs.nix
+      ./modules/exclude-plasma6-pkgs.nix
+      # ./modules/turnOnHotspot.nix
     ];
 
+  # boot.kernelPackages = pkgs.linuxPackages_rt_6_1;
+  boot.kernelPackages = pkgs.linuxPackages-rt_latest;
+  # boot.kernelPackages = pkgs.linuxPackages-rt;
+
+  # boot.kernelPackages = pkgs.linuxPackages_zen;
+
   # Bootloader.(systemd default)
-  boot.loader.systemd-boot.enable = false;
-  #boot.loader.efi.canTouchEfiVariables = true;
+  # boot. loader. systemd-boot. enable = true;
+  # boot.loader.efi.canTouchEfiVariables = true;
+  services.xserver.excludePackages = with  pkgs; [ xterm ];
+
 
   #Grub Bootloader # For dual Boot with Windows
   boot.loader = {
@@ -62,17 +75,6 @@
 
   networking.hostName = "NixOS"; # Define your hostname.
   #networking.wireless.enable = true;  #Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://26.223.237.35:10809/";
-  # networking.proxy.noProxy = "27.0.0.1,localhost,internal.domain";
-  # networking.proxy = {
-  #   default = "http://192.168.92.242:10809";
-  #   httpProxy = "http://192.168.92.242:10809";
-  #   httpsProxy = "http://192.168.92.242:10809";
-  #   noProxy = "localhost,127.0.0.1,.example.com"; 
-  # };
-
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -130,20 +132,27 @@
   services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  # services.xserver.displayManager.gdm.enable = true;
+  # services.xserver.desktopManager.gnome.enable = true;
+
+  #Enable the KDE Desktop Environment
+  services.displayManager.sddm.enable = true;
+  services.displayManager.sddm.wayland.enable = true;
+  services.desktopManager.plasma6.enable = true;
+
+  # Fix conflict when install GNOME/KDE alongside
+  ## Use this for the kssshaskpass
+  # programs.ssh.askPassword = lib.mkForce "${pkgs.plasma5Packages.ksshaskpass}/bin/ksshaskpass";
+  ## or this for seahorse
+  ## programs.ssh.askPassword = lib.mkForce "${pkgs.gnome.seahorse}/libexec/seahorse/ssh-askpass";
+
 
   # Install Displaylink Driver
   services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
 
-  # Enable RDP (freerdp) - Remote Desktop Protocol
-  services.gnome.gnome-remote-desktop.enable = true;
-  services.xrdp.enable = true;
-  services.xrdp.defaultWindowManager = "gnome-remote-desktop";
-  services.xrdp.openFirewall = true;
 
   #Install Hypervisor
-  boot.kernelModules = [ "kvm-amd" "kvm-intel" ];
+  boot.kernelModules = [ "kvm-intel" ];
   # Install Virt-manager 
   virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
@@ -230,17 +239,36 @@
   services.openssh.enable = true;
 
   # Setting up udev rules
-  # services.udev.extraRules = [
-  # ''ACTION=="add"''
-  # ''SUBSYSTEM=="pci"''
-  # ''ATTR{vendor}=="0x1022"''
-  # ''ATTR{device}=="0x1483"''
-  # ''ATTR{power/wakeup}="disabled"''
-  # ''''
-  # ''KERNEL="event*"''
-  # ''ATTRS { name }="AT Translated Set 2 keyboard"''
-  # ''ENV{ LIBINPUT_IGNORE_DEVICE }="1"''
-  # ];
+  # services.udev.extraRules =
+  # ''ACTION=="add",
+  # KERNEL=="event*"
+  # KERNELS=="input0",
+  # SUBSYSTEMS=="input",
+  # ATTRS{ name }=="AT Translated Set 2 keyboard",
+  # ENV{LIBINPUT_IGNORE_DEVICE}="1" ''
+  # ''
+  #   ACTION== "add",
+  #   KERNEL== "event0",
+  #   KERNELS == "input0", 
+  #   SUBSYSTEMS=="input", 
+  #   ENV{ID_BUS}=="i8042",
+  #   ENV{LIBINPUT_IGNORE_DEVICE}="1" 
+  # ''
+  # # ''
+  #   ACTION!="remove", KERNEL=="event[0-9]*", \
+  #     ENV{ID_VENDOR_ID}=="012a", \
+  #     ENV{ID_MODEL_ID}=="034b", \
+  #     ENV{LIBINPUT_IGNORE_DEVICE} = "1"
+  # ''
+  # ;
+
+  # Ignore Dualsense Touchpad in Desktop
+  # services.udev.extraRules = ''
+  #   ACTION=="add|change", KERNEL=="event[0-9]*", 
+  #   ATTRS{ name }=="AT Translated Set 2 keyboard",
+  #   ENV{LIBINPUT_IGNORE_DEVICE}="1"
+  # '';
+
 
 
   # Open ports in the firewall.
@@ -258,6 +286,13 @@
   system.stateVersion = "24.05"; # Did you read the comment?
 }
  
+
+
+
+
+
+
+
 
 
 

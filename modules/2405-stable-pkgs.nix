@@ -1,8 +1,6 @@
-{ config, lib, pkgs, ... }:
+{ pkgs, ... }:
 
 {
-
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -17,16 +15,17 @@
     qemu-utils
     OVMFFull
     # Gnome Extensions
-    gnomeExtensions.caffeine
-    gnomeExtensions.vitals
-    gnomeExtensions.appindicator
-    gnomeExtensions.astra-monitor
-    gnomeExtensions.miniview
-    gnomeExtensions.privacy-settings-menu
-    gnomeExtensions.logo-menu
-    gnomeExtensions.just-perfection
-    gnomeExtensions.gnome-40-ui-improvements
-    gnomeExtensions.gsconnect
+    # gnomeExtensions.caffeine
+    # gnomeExtensions.vitals
+    # gnomeExtensions.appindicator
+    # gnomeExtensions.astra-monitor
+    # gnomeExtensions.miniview
+    # gnomeExtensions.privacy-settings-menu
+    # gnomeExtensions.logo-menu
+    # gnomeExtensions.just-perfection
+    # gnomeExtensions.gnome-40-ui-improvements
+    # gnomeExtensions.gsconnect
+    # gnome.gnome-tweaks
     #systemPackages
     pkg-config
     pciutils
@@ -36,12 +35,13 @@
     libinput
     binutils-unwrapped-all-targets
     wirelesstools
-    gtop
+    btop
     wget
     vim
     #neovim
     git
     gcc
+    gcc_multi
     yarn
     libgcc
     mpfr
@@ -53,12 +53,12 @@
     curl
     wl-clipboard
     xclip
+    discord
     neofetch
     kitty
     zsh
     distrobox
     google-chrome
-    gnome.gnome-tweaks
     dbeaver-bin
     ciscoPacketTracer8
     anki-bin
@@ -70,8 +70,6 @@
     libreoffice
     obs-studio
     jetbrains.idea-community-bin
-    arduino-ide
-    arduino-cli
     teamviewer
     gparted
     mongodb-compass
@@ -80,7 +78,7 @@
     gittyup # Git client 
     wineWowPackages.stable
     winetricks
-    samba
+    # samba
     freerdp # Remote Desktop Protocol Client
     rpi-imager
     realvnc-vnc-viewer # one type of Remote Desktop
@@ -93,23 +91,32 @@
     yaru-theme
     nerdfonts
     luajitPackages.luarocks
+
     #Programming Languages
     nodejs_20
     corepack # wrappers for npm, pnpm and Yarn 
     go
     gotools
     python3
+
     # Rust & dependencies
     rustc
     rustup
     cargo
+
     #LSP & Formatter NixOS
     nil
     nixpkgs-fmt
 
-    #Steam Pkgs
-    # steam-run
-    # protonup
+    #AI & Cloud 
+    lmstudio
+    nextcloud-client
+    texliveTeTeX
+    #Plasma6 pkgs
+    blender
+    lutris
+
+
   ];
 
 }

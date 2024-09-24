@@ -16,7 +16,6 @@
     geary # email reader
     totem # video player
   ]);
-  services.xserver.excludePackages = with  pkgs; [ xterm ];
   ##
 }
 
