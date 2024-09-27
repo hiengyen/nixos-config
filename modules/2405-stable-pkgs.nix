@@ -26,7 +26,12 @@
     # gnomeExtensions.gnome-40-ui-improvements
     # gnomeExtensions.gsconnect
     # gnome.gnome-tweaks
-    #systemPackages
+
+    #KDE packages
+    kdePackages.kdeconnect-kde
+
+    #SystemPackages
+
     pkg-config
     pciutils
     busybox
@@ -88,7 +93,6 @@
     fzf-zsh
     fd
     ripgrep
-    yaru-theme
     nerdfonts
     luajitPackages.luarocks
 
@@ -114,8 +118,7 @@
     texliveTeTeX
     #Plasma6 pkgs
     blender
-    lutris
-
+    heroic
 
   ];
 

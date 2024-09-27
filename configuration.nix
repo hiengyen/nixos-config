@@ -17,57 +17,55 @@
       ./modules/nix-ld-channel-pkgs.nix
       ./modules/2405-stable-pkgs.nix
       # ./modules/exclude-gnome-pkgs.nix
-      ./modules/exclude-plasma6-pkgs.nix
-      # ./modules/turnOnHotspot.nix
+      # ./modules/exclude-plasma6-pkgs.nix
+      ./modules/turnOnHotspot.nix
     ];
 
-  # boot.kernelPackages = pkgs.linuxPackages_rt_6_1;
-  boot.kernelPackages = pkgs.linuxPackages-rt_latest;
   # boot.kernelPackages = pkgs.linuxPackages-rt;
-
+  # boot.kernelPackages = pkgs.linuxPackages-rt;
   # boot.kernelPackages = pkgs.linuxPackages_zen;
 
   # Bootloader.(systemd default)
-  # boot. loader. systemd-boot. enable = true;
-  # boot.loader.efi.canTouchEfiVariables = true;
+  boot. loader. systemd-boot. enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
   services.xserver.excludePackages = with  pkgs; [ xterm ];
 
 
   #Grub Bootloader # For dual Boot with Windows
-  boot.loader = {
-    efi = {
-      canTouchEfiVariables = true;
-      # assuming /boot is the mount point of the  EFI partition in NixOS (as the installation section recommends).
-      efiSysMountPoint = "/boot";
-    };
-    grub = {
-      # despite what the configuration.nix manpage seems to indicate,
-      # as of release 17.09, setting device to "nodev" will still call
-      # `grub-install` if efiSupport is true
-      # (the devices list is not used by the EFI grub install,
-      # but must be set to some value in order to pass an assert in grub.nix)
-      devices = [ "nodev" ];
-      efiSupport = true;
-      enable = true;
-      # set $FS_UUID to the UUID of the EFI partition
-      extraEntries = ''
-        menuentry "Windows" {
-          insmod part_gpt
-          insmod fat
-          insmod search_fs_uuid
-          insmod chain
-          search --fs-uuid --set=root $FS_UUID
-          chainloader /EFI/Microsoft/Boot/bootmgfw.efi
-        }
-        menuentry "Reboot" {
-                    reboot
-        }
-        menuentry "Poweroff" {
-                    halt
-        }
-      '';
-    };
-  };
+  # boot.loader = {
+  #   efi = {
+  #     canTouchEfiVariables = true;
+  #     # assuming /boot is the mount point of the  EFI partition in NixOS (as the installation section recommends).
+  #     efiSysMountPoint = "/boot";
+  #   };
+  #   grub = {
+  #     # despite what the configuration.nix manpage seems to indicate,
+  #     # as of release 17.09, setting device to "nodev" will still call
+  #     # `grub-install` if efiSupport is true
+  #     # (the devices list is not used by the EFI grub install,
+  #     # but must be set to some value in order to pass an assert in grub.nix)
+  #     devices = [ "nodev" ];
+  #     efiSupport = true;
+  #     enable = true;
+  #     # set $FS_UUID to the UUID of the EFI partition
+  #     extraEntries = ''
+  #       menuentry "Windows" {
+  #         insmod part_gpt
+  #         insmod fat
+  #         insmod search_fs_uuid
+  #         insmod chain
+  #         search --fs-uuid --set=root $FS_UUID
+  #         chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+  #       }
+  #       menuentry "Reboot" {
+  #                   reboot
+  #       }
+  #       menuentry "Poweroff" {
+  #                   halt
+  #       }
+  #     '';
+  #   };
+  # };
 
   # Fix incorrect time when booting Windows
   time.hardwareClockInLocalTime = true;
@@ -164,10 +162,10 @@
   ];
 
   ## Run binaries of different architecture
-  boot.binfmt.emulatedSystems = [
-    "aarch64-linux"
-    "riscv64-linux"
-  ];
+  # boot.binfmt.emulatedSystems = [
+  #   "aarch64-linux"
+  #   "riscv64-linux"
+  # ];
 
   # Enable Flatpak 
   services.flatpak.enable = true;
@@ -262,16 +260,16 @@
   # ''
   # ;
 
-  # Ignore Dualsense Touchpad in Desktop
-  # services.udev.extraRules = ''
-  #   ACTION=="add|change", KERNEL=="event[0-9]*", 
-  #   ATTRS{ name }=="AT Translated Set 2 keyboard",
-  #   ENV{LIBINPUT_IGNORE_DEVICE}="1"
-  # '';
-
-
-
   # Open ports in the firewall.
+  networking.firewall = {
+    enable = true;
+    allowedTCPPortRanges = [
+      { from = 1714; to = 1764; } # KDE Connect
+    ];
+    allowedUDPPortRanges = [
+      { from = 1714; to = 1764; } # KDE Connect
+    ];
+  };
   # networking.firewall.allowedTCPPorts = [80 443 22];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
