@@ -16,12 +16,14 @@
       ./modules/unstable-channel-pkgs.nix
       ./modules/nix-ld-channel-pkgs.nix
       ./modules/2405-stable-pkgs.nix
+      # ./modules/suspend-then-hibernate.nix
       # ./modules/exclude-gnome-pkgs.nix
       # ./modules/exclude-plasma6-pkgs.nix
-      ./modules/turnOnHotspot.nix
+      # ./modules/turnOnHotspot.nix
     ];
 
-  # boot.kernelPackages = pkgs.linuxPackages-rt;
+  # boot.kernelPackages = pkgs.linuxPackages_6_10;
+  # boot.kernelPackages = pkgs.linuxPackages-rt_latest;
   # boot.kernelPackages = pkgs.linuxPackages-rt;
   # boot.kernelPackages = pkgs.linuxPackages_zen;
 
@@ -66,6 +68,10 @@
   #     '';
   #   };
   # };
+  #
+
+  # Enabled Nix Flakes
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Fix incorrect time when booting Windows
   time.hardwareClockInLocalTime = true;
@@ -162,10 +168,10 @@
   ];
 
   ## Run binaries of different architecture
-  # boot.binfmt.emulatedSystems = [
-  #   "aarch64-linux"
-  #   "riscv64-linux"
-  # ];
+  boot.binfmt.emulatedSystems = [
+    "aarch64-linux"
+    "riscv64-linux"
+  ];
 
   # Enable Flatpak 
   services.flatpak.enable = true;

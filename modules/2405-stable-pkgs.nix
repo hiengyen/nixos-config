@@ -29,13 +29,16 @@
 
     #KDE packages
     kdePackages.kdeconnect-kde
+    kdePackages.kcalc
 
     #SystemPackages
-
+    sbctl # tool for create Secure Boot keys
+    linux-wifi-hotspot # create_ap
     pkg-config
     pciutils
     busybox
     unzip
+    unrar-wrapper
     usbutils
     libinput
     binutils-unwrapped-all-targets
@@ -43,7 +46,6 @@
     btop
     wget
     vim
-    #neovim
     git
     gcc
     gcc_multi
@@ -62,10 +64,15 @@
     neofetch
     kitty
     zsh
+    yazi
+    xsel
+    poppler
+    ffmpegthumbnailer
+    jq
+    imagemagick
     distrobox
     google-chrome
     dbeaver-bin
-    ciscoPacketTracer8
     anki-bin
     mpv
     mplayer
@@ -83,10 +90,11 @@
     gittyup # Git client 
     wineWowPackages.stable
     winetricks
-    # samba
     freerdp # Remote Desktop Protocol Client
     rpi-imager
     realvnc-vnc-viewer # one type of Remote Desktop
+    hardinfo
+
 
     # Lazy.nvim dependencies
     fzf
@@ -116,9 +124,14 @@
     lmstudio
     nextcloud-client
     texliveTeTeX
-    #Plasma6 pkgs
+
+    drawio
+    librecad #2D CAD package
+    librepcb
     blender
-    heroic
+    gimp-with-plugins
+    samba4Full #The standard Windows interoperability suite of programs for Linux and Unix
+
 
   ];
 
