@@ -4,6 +4,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+
     # Always starts QEMU with OVMF firmware implementing UEFI support
     (pkgs.writeShellScriptBin "qemu-system-x86_64-uefi" ''
       qemu-system-x86_64 \
@@ -14,6 +15,7 @@
     qemu_full
     qemu-utils
     OVMFFull
+
     # Gnome Extensions
     # gnomeExtensions.caffeine
     # gnomeExtensions.vitals
@@ -32,6 +34,8 @@
     kdePackages.kcalc
 
     #SystemPackages
+    uucp # include cu command
+    screen
     sbctl # tool for create Secure Boot keys
     linux-wifi-hotspot # create_ap
     pkg-config
@@ -61,6 +65,7 @@
     wl-clipboard
     xclip
     discord
+    putty
     neofetch
     kitty
     zsh
