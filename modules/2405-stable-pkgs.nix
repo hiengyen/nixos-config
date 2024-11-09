@@ -11,10 +11,21 @@
       -bios ${pkgs.OVMF.fd}/FV/OVMF.fd \
       "$@"
     '')
+    ## 
     qemu
+    qemu_kvm
+    qemu_test
     qemu_full
     qemu-utils
+    uefi-run #Directly run UEFI applications in qemu
     OVMFFull
+    spice
+    spice-vdagent # Enhanced SPICE integration for linux QEMU guest
+    virglrenderer # A virtual 3D GPU library that allows a qemu guest to use the host GPU for accelerated 3D rendering
+    ubootQemuX86 #Boot for embedded system
+    xorg.xf86videoqxl #Xorg X11 qxl video driver
+    virtiofsd
+    virtio-win
 
     # Gnome Extensions
     # gnomeExtensions.caffeine
@@ -32,6 +43,7 @@
     #KDE packages
     kdePackages.kdeconnect-kde
     kdePackages.kcalc
+    kdePackages.ktorrent
 
     #SystemPackages
     uucp # include cu command
@@ -60,6 +72,7 @@
     libmpc
     haskellPackages.gdp
     gnumake42 # make
+    cmake
     perl
     curl
     wl-clipboard
@@ -87,6 +100,7 @@
     libreoffice
     obs-studio
     jetbrains.idea-community-bin
+    netbeans
     teamviewer
     gparted
     mongodb-compass
@@ -97,7 +111,7 @@
     winetricks
     freerdp # Remote Desktop Protocol Client
     rpi-imager
-    realvnc-vnc-viewer # one type of Remote Desktop
+    # realvnc-vnc-viewer # one type of Remote Desktop
     hardinfo
 
 
@@ -127,12 +141,9 @@
 
     #AI & Cloud 
     lmstudio
-    nextcloud-client
     texliveTeTeX
 
     drawio
-    librecad #2D CAD package
-    librepcb
     blender
     gimp-with-plugins
     samba4Full #The standard Windows interoperability suite of programs for Linux and Unix

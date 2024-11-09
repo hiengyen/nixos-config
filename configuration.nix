@@ -22,6 +22,8 @@
       # ./modules/turnOnHotspot.nix
     ];
 
+  nixpkgs.config.allowUnsupportedSystem = true;
+
   # boot.kernelPackages = pkgs.linuxPackages_6_10;
   # boot.kernelPackages = pkgs.linuxPackages-rt_latest;
   # boot.kernelPackages = pkgs.linuxPackages-rt;
@@ -82,8 +84,6 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
-
-  # Enable Hotspot
 
   #Enable Bluetooth
   hardware.bluetooth.enable = true; # enables support for Bluetooth
@@ -163,9 +163,18 @@
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true;
   virtualisation.libvirtd.qemu.ovmf.packages = [
-    pkgs.pkgsCross.aarch64-multiplatform.OVMF.fd #AAVMF
+    pkgs.pkgsCross.aarch64-multiplatform.OVMF.fd #AAVMF for arm 64
     pkgs.OVMF.fd
   ];
+
+
+  # virtualisation.libvirtd = {
+  #   enable = true;
+  #   extraConfig = ''
+  #     env XDG_RUNTIME_DIR=/run/user/1000}
+  #   '';
+  # };
+
 
   ## Run binaries of different architecture
   boot.binfmt.emulatedSystems = [
