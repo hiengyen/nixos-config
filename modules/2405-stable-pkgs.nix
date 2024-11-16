@@ -20,6 +20,9 @@
     uefi-run #Directly run UEFI applications in qemu
     OVMFFull
     spice
+    spice-gtk
+    win-spice
+    x11spice
     spice-vdagent # Enhanced SPICE integration for linux QEMU guest
     virglrenderer # A virtual 3D GPU library that allows a qemu guest to use the host GPU for accelerated 3D rendering
     ubootQemuX86 #Boot for embedded system
@@ -72,7 +75,7 @@
     libmpc
     haskellPackages.gdp
     gnumake42 # make
-    cmake
+    # cmake
     perl
     curl
     wl-clipboard
@@ -106,15 +109,17 @@
     mongodb-compass
     obsidian
     stow
+    brave
     gittyup # Git client 
     wineWowPackages.stable
     winetricks
     freerdp # Remote Desktop Protocol Client
     rpi-imager
-    # realvnc-vnc-viewer # one type of Remote Desktop
     hardinfo
-
-
+    vscodium
+    samba4Full #The standard Windows interoperability suite of programs for Linux and Unix
+    signal-desktop # private chat app 
+    xorg.libX11
     # Lazy.nvim dependencies
     fzf
     fzf-zsh
@@ -122,32 +127,38 @@
     ripgrep
     nerdfonts
     luajitPackages.luarocks
-
     #Programming Languages
     nodejs_20
     corepack # wrappers for npm, pnpm and Yarn 
     go
     gotools
-    python3
+    python312
+    python312Packages.yq
+    python312Packages.pip
+    python312Packages.dlib
+    python312Packages.wheel
+    python312Packages.setuptools
+    python312Packages.imutils
+    python312Packages.cmake
+    # fcitx5
+    # fcitx5
+    # fcitx5-skk
+    # fcitx5-lua
+    # fcitx5-gtk
+    # fcitx5-bamboo
+
 
     # Rust & dependencies
     rustc
     rustup
     cargo
 
-    #LSP & Formatter NixOS
-    nil
-    nixpkgs-fmt
-
-    #AI & Cloud 
+    #AI & Cloud & Tools 
     lmstudio
     texliveTeTeX
-
     drawio
     blender
     gimp-with-plugins
-    samba4Full #The standard Windows interoperability suite of programs for Linux and Unix
-
 
   ];
 

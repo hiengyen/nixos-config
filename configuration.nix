@@ -1,9 +1,3 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
-# { config, lib, pkgs, ... }:
-
 { pkgs, ... }:
 
 {
@@ -16,10 +10,13 @@
       ./modules/unstable-channel-pkgs.nix
       ./modules/nix-ld-channel-pkgs.nix
       ./modules/2405-stable-pkgs.nix
+      ./modules/libvirtd.nix
+      ./modules/vfio.nix
       # ./modules/suspend-then-hibernate.nix
       # ./modules/exclude-gnome-pkgs.nix
       # ./modules/exclude-plasma6-pkgs.nix
       # ./modules/turnOnHotspot.nix
+      # ./modules/winapps.nix
     ];
 
   nixpkgs.config.allowUnsupportedSystem = true;
@@ -29,8 +26,10 @@
   # boot.kernelPackages = pkgs.linuxPackages-rt;
   # boot.kernelPackages = pkgs.linuxPackages_zen;
 
+
+
   # Bootloader.(systemd default)
-  boot. loader. systemd-boot. enable = true;
+  boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   services.xserver.excludePackages = with  pkgs; [ xterm ];
 
@@ -66,11 +65,18 @@
   #       }
   #       menuentry "Poweroff" {
   #                   halt
-  #       }
+  #        }
   #     '';
   #   };
   # };
   #
+  ## Setting up Proxy 
+  systemd.services.nix-daemon.environment = {
+    # socks5h mean that the hostname is resolved by the SOCKS server
+    # http_proxy = "socks5h://21.175.12.73:10809";
+    # https_proxy = "socks5h://21.175.12.73:10809";
+    # all_proxy= "http://localhost:7890"; # or use http prctocol instead of socks5
+  };
 
   # Enabled Nix Flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -98,7 +104,6 @@
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
-
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "en_US.UTF-8";
     LC_IDENTIFICATION = "en_US.UTF-8";
@@ -111,13 +116,14 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-
+  # Input Method Ibus
   i18n.inputMethod = {
     enabled = "ibus";
     ibus.engines = with pkgs.ibus-engines; [
       bamboo
     ];
   };
+
 
   #Install fonts
   fonts.packages = with pkgs; [
@@ -154,18 +160,6 @@
   # Install Displaylink Driver
   services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
 
-
-  #Install Hypervisor
-  boot.kernelModules = [ "kvm-intel" ];
-  # Install Virt-manager 
-  virtualisation.libvirtd.enable = true;
-  programs.virt-manager.enable = true;
-  services.qemuGuest.enable = true;
-  services.spice-vdagentd.enable = true;
-  virtualisation.libvirtd.qemu.ovmf.packages = [
-    pkgs.pkgsCross.aarch64-multiplatform.OVMF.fd #AAVMF for arm 64
-    pkgs.OVMF.fd
-  ];
 
 
   # virtualisation.libvirtd = {
