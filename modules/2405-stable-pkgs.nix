@@ -63,6 +63,7 @@
     binutils-unwrapped-all-targets
     wirelesstools
     btop
+    hwinfo
     wget
     vim
     git
@@ -70,6 +71,7 @@
     gcc_multi
     yarn
     libgcc
+    nmap
     mpfr
     gmp
     libmpc
@@ -116,7 +118,6 @@
     freerdp # Remote Desktop Protocol Client
     rpi-imager
     hardinfo
-    vscodium
     samba4Full #The standard Windows interoperability suite of programs for Linux and Unix
     signal-desktop # private chat app 
     xorg.libX11
