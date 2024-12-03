@@ -19,7 +19,7 @@
   ];
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true;
-  hardware.opengl.enable = true;
+  hardware.graphics.enable = true; # 24.05 :   hardware.opengl.enable = true;
   virtualisation.spiceUSBRedirection.enable = true; #SPICE redirects : to redirect USB device from host machine
   # Install Virt-manager
   programs.virt-manager.enable = true;

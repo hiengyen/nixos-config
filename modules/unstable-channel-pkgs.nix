@@ -7,10 +7,10 @@ in
   environment.systemPackages = [
     unstable.neovim
     unstable.realvnc-vnc-viewer # one type of Remote Desktop
-    unstable.softmaker-office
-    # unstable.kdePackages.fcitx5-unikey
-    # unstable.fcitx5-unikey
     unstable.vscode
+    unstable.google-chrome
+    unstable.gnomeExtensions.clipboard-indicator
+
 
 
   ];

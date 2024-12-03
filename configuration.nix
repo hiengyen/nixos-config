@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
 
@@ -8,16 +8,31 @@
       ./hardware-configuration.nix
       ./modules/containers.nix
       ./modules/unstable-channel-pkgs.nix
+      ./modules/2411-stable-pkgs.nix
       ./modules/nix-ld-channel-pkgs.nix
-      ./modules/2405-stable-pkgs.nix
       ./modules/libvirtd.nix
       ./modules/vfio.nix
-      # ./modules/suspend-then-hibernate.nix
-      # ./modules/exclude-gnome-pkgs.nix
-      # ./modules/exclude-plasma6-pkgs.nix
+      ./modules/exclude-gnome-pkgs.nix
+      ./modules/exclude-plasma6-pkgs.nix
       # ./modules/turnOnHotspot.nix
+      # ./modules/suspend-then-hibernate.nix
       # ./modules/winapps.nix
     ];
+
+  # Turn on Mosquitto services - MQTT broker
+  services.mosquitto = {
+    enable = true;
+    listeners = [
+      {
+        address = "0.0.0.0";
+        port = 1883;
+        acl = [ "pattern readwrite #" ];
+        omitPasswordAuth = true;
+        settings.allow_anonymous = true;
+      }
+    ];
+  };
+
 
   nixpkgs.config.allowUnsupportedSystem = true;
 
@@ -118,7 +133,7 @@
 
   # Input Method Ibus
   i18n.inputMethod = {
-    enabled = "ibus";
+    type.enabled = "ibus";
     ibus.engines = with pkgs.ibus-engines; [
       bamboo
     ];
@@ -128,7 +143,7 @@
   #Install fonts
   fonts.packages = with pkgs; [
     noto-fonts
-    noto-fonts-cjk
+    noto-fonts-cjk-sans
     noto-fonts-emoji
     liberation_ttf
     mplus-outline-fonts.githubRelease
@@ -142,23 +157,25 @@
   services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.
-  # services.xserver.displayManager.gdm.enable = true;
-  # services.xserver.desktopManager.gnome.enable = true;
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
+  services.displayManager.defaultSession = "gnome-xorg";
+
 
   #Enable the KDE Desktop Environment
-  services.displayManager.sddm.enable = true;
-  services.displayManager.sddm.wayland.enable = true;
+  # services.displayManager.sddm.enable = true;
+  # services.displayManager.sddm.wayland.enable = true;
   services.desktopManager.plasma6.enable = true;
 
   # Fix conflict when install GNOME/KDE alongside
   ## Use this for the kssshaskpass
-  # programs.ssh.askPassword = lib.mkForce "${pkgs.plasma5Packages.ksshaskpass}/bin/ksshaskpass";
+  # programs.ssh.askPassword = lib.mkForce "${pkgs.plasma5Packages.ksshaskpass.out}/bin/ksshaskpass";
   ## or this for seahorse
-  ## programs.ssh.askPassword = lib.mkForce "${pkgs.gnome.seahorse}/libexec/seahorse/ssh-askpass";
+  programs.ssh.askPassword = lib.mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
 
 
   # Install Displaylink Driver
-  services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
+  # services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
 
 
 
@@ -193,7 +210,6 @@
   services.teamviewer.enable = true;
 
   # Enable sound with Pipewire.
-  sound.enable = true;
   hardware.pulseaudio.enable = false; # turn off Pulse audio
   security.rtkit.enable = true;
   services.pipewire = {
@@ -278,6 +294,8 @@
     allowedUDPPortRanges = [
       { from = 1714; to = 1764; } # KDE Connect
     ];
+    allowedTCPPorts = [ 1883 ];
+
   };
   # networking.firewall.allowedTCPPorts = [80 443 22];
   # networking.firewall.allowedUDPPorts = [ ... ];

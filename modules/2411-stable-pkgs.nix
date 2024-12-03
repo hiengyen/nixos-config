@@ -42,12 +42,12 @@
     gnomeExtensions.just-perfection
     gnomeExtensions.gnome-40-ui-improvements
     gnomeExtensions.gsconnect
-    gnome.gnome-tweaks
+    gnome-tweaks
 
     #KDE packages
-    kdePackages.kdeconnect-kde
+    # kdePackages.kdeconnect-kde
     kdePackages.kcalc
-    kdePackages.ktorrent
+    # kdePackages.ktorrent
 
     #SystemPackages
     uucp # include cu command
@@ -78,7 +78,6 @@
     libmpc
     haskellPackages.gdp
     gnumake42 # make
-    # cmake
     perl
     curl
     wl-clipboard
