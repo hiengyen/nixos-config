@@ -8,6 +8,7 @@
       ./hardware-configuration.nix
       ./modules/containers.nix
       ./modules/unstable-channel-pkgs.nix
+      # ./modules/2405-pkgs.nix
       ./modules/2411-stable-pkgs.nix
       ./modules/nix-ld-channel-pkgs.nix
       ./modules/libvirtd.nix
@@ -131,14 +132,22 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  # Input Method Ibus
+  # Enable InputMethod Ibus
+  # i18n.inputMethod = {
+  #   enable = true;
+  #   type = "ibus";
+  #   ibus.engines = with pkgs.ibus-engines; [ bamboo m17n];
+  # };
+
+  # Enable InputMethod Fcitx5
   i18n.inputMethod = {
-    type.enabled = "ibus";
-    ibus.engines = with pkgs.ibus-engines; [
-      bamboo
+    enable = true;
+    type = "fcitx5";
+    fcitx5.addons = with pkgs; [
+      fcitx5-m17n
+      libsForQt5.fcitx5-unikey
     ];
   };
-
 
   #Install fonts
   fonts.packages = with pkgs; [

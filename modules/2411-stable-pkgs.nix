@@ -12,6 +12,15 @@
       "$@"
     '')
     ## 
+    ## Fcitx5
+    # fcitx5
+    # libsForQt5.fcitx5-with-addons
+    # libsForQt5.fcitx5-unikey
+    # fcitx5-gtk
+    # fcitx5-bamboo
+
+
+    #
     qemu
     qemu_kvm
     qemu_test
@@ -54,6 +63,7 @@
     screen
     sbctl # tool for create Secure Boot keys
     linux-wifi-hotspot # create_ap
+    cmake
     pkg-config
     pciutils
     busybox
@@ -104,8 +114,8 @@
     libreoffice
     obs-studio
     jetbrains.idea-community-bin
-    jetbrains.pycharm-community-src
-    netbeans
+    # jetbrains.pycharm-community-src
+    # netbeans
     teamviewer
     gparted
     mongodb-compass
@@ -136,11 +146,18 @@
     python312
     mosquitto # mqtt broker server
     platformio-core # IOT development
+    socat
+    screen
 
     # Rust & dependencies
     rustc
     rustup
     cargo
+    #Java
+    maven
+    jdk
+    jre8
+
 
     #AI & Cloud & Tools 
     lmstudio
