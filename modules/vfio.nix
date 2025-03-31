@@ -4,7 +4,7 @@ let
     "8086:9a49" # Graphics
   ];
 in
-{ pkgs, lib, config, ... }: {
+{ lib, config, ... }: {
   options.vfio.enable = with lib;
     mkEnableOption "Configure the machine for VFIO";
 

@@ -8,31 +8,28 @@
       ./hardware-configuration.nix
       ./modules/containers.nix
       ./modules/unstable-channel-pkgs.nix
-      # ./modules/2405-pkgs.nix
       ./modules/2411-stable-pkgs.nix
       ./modules/nix-ld-channel-pkgs.nix
-      ./modules/libvirtd.nix
+      ./modules/virtualization.nix
       ./modules/vfio.nix
       ./modules/exclude-gnome-pkgs.nix
       ./modules/exclude-plasma6-pkgs.nix
-      # ./modules/turnOnHotspot.nix
-      # ./modules/suspend-then-hibernate.nix
-      # ./modules/winapps.nix
+      ./modules/mongodb.nix
     ];
 
   # Turn on Mosquitto services - MQTT broker
-  services.mosquitto = {
-    enable = true;
-    listeners = [
-      {
-        address = "0.0.0.0";
-        port = 1883;
-        acl = [ "pattern readwrite #" ];
-        omitPasswordAuth = true;
-        settings.allow_anonymous = true;
-      }
-    ];
-  };
+  # services.mosquitto = {
+  #   enable = true;
+  #   listeners = [
+  #     {
+  #       address = "0.0.0.0";
+  #       port = 1883;
+  #       acl = [ "pattern readwrite #" ];
+  #       omitPasswordAuth = true;
+  #       settings.allow_anonymous = true;
+  #     }
+  #   ];
+  # };
 
 
   nixpkgs.config.allowUnsupportedSystem = true;
@@ -86,6 +83,7 @@
   #   };
   # };
   #
+
   ## Setting up Proxy 
   systemd.services.nix-daemon.environment = {
     # socks5h mean that the hostname is resolved by the SOCKS server
@@ -160,6 +158,8 @@
     proggyfonts
     vistafonts
     corefonts
+    fira-code-nerdfont
+
   ];
 
   # Enable the X11 windowing system.
@@ -168,23 +168,23 @@
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-  services.displayManager.defaultSession = "gnome-xorg";
+  services.displayManager.defaultSession = "gnome";
 
 
   #Enable the KDE Desktop Environment
   # services.displayManager.sddm.enable = true;
   # services.displayManager.sddm.wayland.enable = true;
-  services.desktopManager.plasma6.enable = true;
+  # services.desktopManager.plasma6.enable = true;
 
   # Fix conflict when install GNOME/KDE alongside
   ## Use this for the kssshaskpass
   # programs.ssh.askPassword = lib.mkForce "${pkgs.plasma5Packages.ksshaskpass.out}/bin/ksshaskpass";
   ## or this for seahorse
-  programs.ssh.askPassword = lib.mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
+  # programs.ssh.askPassword = lib.mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
 
 
   # Install Displaylink Driver
-  # services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
+  services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
 
 
 
@@ -265,7 +265,7 @@
     enableSSHSupport = true;
   };
 
-  # List services that you want to enable:
+  ### List services that you want to enable:
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
@@ -303,8 +303,8 @@
     allowedUDPPortRanges = [
       { from = 1714; to = 1764; } # KDE Connect
     ];
-    allowedTCPPorts = [ 1883 ];
-
+    allowedTCPPorts = [ 8554 8889 1883 80 443 22 ];
+    allowedUDPPorts = [ 8554 8889 1883 ];
   };
   # networking.firewall.allowedTCPPorts = [80 443 22];
   # networking.firewall.allowedUDPPorts = [ ... ];
@@ -317,16 +317,5 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.05";
+  system.stateVersion = "24.11";
 }
- 
-
-
-
-
-
-
-
-
-
-

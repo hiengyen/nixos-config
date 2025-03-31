@@ -6,32 +6,24 @@
   environment.systemPackages = with pkgs; [
 
     # Always starts QEMU with OVMF firmware implementing UEFI support
-    (pkgs.writeShellScriptBin "qemu-system-x86_64-uefi" ''
-      qemu-system-x86_64 \
-      -bios ${pkgs.OVMF.fd}/FV/OVMF.fd \
-      "$@"
-    '')
-    ## 
-    ## Fcitx5
-    # fcitx5
-    # libsForQt5.fcitx5-with-addons
-    # libsForQt5.fcitx5-unikey
-    # fcitx5-gtk
-    # fcitx5-bamboo
+    # (pkgs.writeShellScriptBin "qemu-system-x86_64-uefi" ''
+    #   #   qemu-system-x86_64 \ #   -bios ${pkgs.OVMF.fd}/FV/OVMF.fd \
+    #   #   "$@"
+    #   # '')
 
-
-    #
     qemu
     qemu_kvm
     qemu_test
     qemu_full
     qemu-utils
-    uefi-run #Directly run UEFI applications in qemu
-    OVMFFull
+    # uefi-run #Directly run UEFI applications in qemu
+    # OVMF
+    # edk2
     spice
     spice-gtk
     win-spice
     x11spice
+    libguestfs #Tools for accessing and modifying virtual machine disk images
     spice-vdagent # Enhanced SPICE integration for linux QEMU guest
     virglrenderer # A virtual 3D GPU library that allows a qemu guest to use the host GPU for accelerated 3D rendering
     ubootQemuX86 #Boot for embedded system
@@ -40,7 +32,9 @@
     virtio-win
 
     # Gnome Extensions
+    # gnomeExtensions.remmina-search-provider
     gnomeExtensions.proxy-switcher
+    gnomeExtensions.user-themes
     gnomeExtensions.caffeine
     gnomeExtensions.vitals
     gnomeExtensions.appindicator
@@ -52,10 +46,11 @@
     gnomeExtensions.gnome-40-ui-improvements
     gnomeExtensions.gsconnect
     gnome-tweaks
+    gnomeExtensions.display-scale-switcher
 
     #KDE packages
     # kdePackages.kdeconnect-kde
-    kdePackages.kcalc
+    # kdePackages.kcalc
     # kdePackages.ktorrent
 
     #SystemPackages
@@ -65,6 +60,7 @@
     linux-wifi-hotspot # create_ap
     cmake
     pkg-config
+    patchelfUnstable
     pciutils
     busybox
     unzip
@@ -101,21 +97,24 @@
     xsel
     poppler
     ffmpegthumbnailer
+    jellyfin-ffmpeg
+    p7zip
+    openssl
+
+
     jq
     imagemagick
     distrobox
     dbeaver-bin
-    anki-bin
+    # anki-bin
     mpv
     mplayer
     vlc
     tmux
     tmuxifier
-    libreoffice
     obs-studio
     jetbrains.idea-community-bin
     # jetbrains.pycharm-community-src
-    # netbeans
     teamviewer
     gparted
     mongodb-compass
@@ -123,14 +122,24 @@
     stow
     brave
     gittyup # Git client 
-    wineWowPackages.stable
-    winetricks
+    # wineWowPackages.stable
+    # winetricks
     freerdp # Remote Desktop Protocol Client
     rpi-imager
     hardinfo
     samba4Full #The standard Windows interoperability suite of programs for Linux and Unix
-    signal-desktop # private chat app 
     xorg.libX11
+    signal-desktop
+    telegram-desktop
+
+    gnome-keyring
+    seahorse
+    xdotool
+    socat
+    screen
+    minicom
+
+
     # Lazy.nvim dependencies
     fzf
     fzf-zsh
@@ -144,10 +153,14 @@
     go
     gotools
     python312
+    python312Packages.pip
     mosquitto # mqtt broker server
     platformio-core # IOT development
-    socat
-    screen
+    #Nix Language
+    nil
+    nixfmt-rfc-style
+
+
 
     # Rust & dependencies
     rustc
@@ -158,14 +171,13 @@
     jdk
     jre8
 
+    #Themes
+    yaru-theme
 
     #AI & Cloud & Tools 
-    lmstudio
     texliveTeTeX
     drawio
-    blender
     gimp-with-plugins
-
   ];
 
 }

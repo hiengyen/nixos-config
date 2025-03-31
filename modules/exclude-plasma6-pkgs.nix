@@ -8,6 +8,8 @@
     kdePackages.kwrited
     kdePackages.spectacle
     kdePackages.discover
+    kdePackages.kwallet
+
   ]);
 
 }
