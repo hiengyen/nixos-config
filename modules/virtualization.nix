@@ -1,5 +1,8 @@
 { pkgs, ... }:
 {
+  ## XEN 
+  # virtualisation.xen.enable = true;
+
   ###Libvirtd,QEMU,KVM
 
   systemd.tmpfiles.rules = [ "L+ /var/lib/qemu/firmware - - - - ${pkgs.qemu}/share/qemu/firmware" ];
@@ -42,8 +45,6 @@
 
   ### Install VMware
   # virtualisation.vmware.host.enable = true;
-  # services.xserver.videoDrivers = [ "vmware" ];
   # virtualisation.vmware.guest.enable = true;
-
 
 }

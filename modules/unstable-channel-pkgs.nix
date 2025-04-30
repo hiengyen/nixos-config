@@ -15,6 +15,7 @@ in
     unstable.gns3-gui
     unstable.gns3-server
     unstable.lmstudio
+    unstable.wpsoffice
   ];
 }
 

@@ -9,28 +9,10 @@
       ./modules/containers.nix
       ./modules/unstable-channel-pkgs.nix
       ./modules/2411-stable-pkgs.nix
-      ./modules/nix-ld-channel-pkgs.nix
       ./modules/virtualization.nix
       ./modules/vfio.nix
       ./modules/exclude-gnome-pkgs.nix
-      ./modules/exclude-plasma6-pkgs.nix
-      ./modules/mongodb.nix
     ];
-
-  # Turn on Mosquitto services - MQTT broker
-  # services.mosquitto = {
-  #   enable = true;
-  #   listeners = [
-  #     {
-  #       address = "0.0.0.0";
-  #       port = 1883;
-  #       acl = [ "pattern readwrite #" ];
-  #       omitPasswordAuth = true;
-  #       settings.allow_anonymous = true;
-  #     }
-  #   ];
-  # };
-
 
   nixpkgs.config.allowUnsupportedSystem = true;
 
@@ -84,20 +66,12 @@
   # };
   #
 
-  ## Setting up Proxy 
-  systemd.services.nix-daemon.environment = {
-    # socks5h mean that the hostname is resolved by the SOCKS server
-    # http_proxy = "socks5h://21.175.12.73:10809";
-    # https_proxy = "socks5h://21.175.12.73:10809";
-    # all_proxy= "http://localhost:7890"; # or use http prctocol instead of socks5
-  };
 
   # Enabled Nix Flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Fix incorrect time when booting Windows
   time.hardwareClockInLocalTime = true;
-
 
   networking.hostName = "NixOS"; # Define your hostname.
   #networking.wireless.enable = true;  #Enables wireless support via wpa_supplicant.
@@ -168,7 +142,7 @@
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-  services.displayManager.defaultSession = "gnome";
+  services.displayManager.defaultSession = "gnome-xorg";
 
 
   #Enable the KDE Desktop Environment
@@ -186,16 +160,6 @@
   # Install Displaylink Driver
   services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
 
-
-
-  # virtualisation.libvirtd = {
-  #   enable = true;
-  #   extraConfig = ''
-  #     env XDG_RUNTIME_DIR=/run/user/1000}
-  #   '';
-  # };
-
-
   ## Run binaries of different architecture
   boot.binfmt.emulatedSystems = [
     "aarch64-linux"
@@ -204,12 +168,6 @@
 
   # Enable Flatpak 
   services.flatpak.enable = true;
-
-  # Configure keymap in X11
-  #services.xserver = {
-  #  layout = "us";
-  #  xkbVariant = "";
-  #};
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -256,7 +214,6 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   programs.mtr.enable = true;
@@ -270,30 +227,6 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
-  # Setting up udev rules
-  # services.udev.extraRules =
-  # ''ACTION=="add",
-  # KERNEL=="event*"
-  # KERNELS=="input0",
-  # SUBSYSTEMS=="input",
-  # ATTRS{ name }=="AT Translated Set 2 keyboard",
-  # ENV{LIBINPUT_IGNORE_DEVICE}="1" ''
-  # ''
-  #   ACTION== "add",
-  #   KERNEL== "event0",
-  #   KERNELS == "input0", 
-  #   SUBSYSTEMS=="input", 
-  #   ENV{ID_BUS}=="i8042",
-  #   ENV{LIBINPUT_IGNORE_DEVICE}="1" 
-  # ''
-  # # ''
-  #   ACTION!="remove", KERNEL=="event[0-9]*", \
-  #     ENV{ID_VENDOR_ID}=="012a", \
-  #     ENV{ID_MODEL_ID}=="034b", \
-  #     ENV{LIBINPUT_IGNORE_DEVICE} = "1"
-  # ''
-  # ;
-
   # Open ports in the firewall.
   networking.firewall = {
     enable = true;
@@ -304,18 +237,13 @@
       { from = 1714; to = 1764; } # KDE Connect
     ];
     allowedTCPPorts = [ 8554 8889 1883 80 443 22 ];
-    allowedUDPPorts = [ 8554 8889 1883 ];
+    allowedUDPPorts = [ 8554 8889 1883 80 443 22 ];
   };
+
   # networking.firewall.allowedTCPPorts = [80 443 22];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.11";
 }

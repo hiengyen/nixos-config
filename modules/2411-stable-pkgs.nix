@@ -178,6 +178,12 @@
     texliveTeTeX
     drawio
     gimp-with-plugins
+    wineWowPackages.stable
+    wineWowPackages.waylandFull
+    winetricks
+    openboard
+    rustdesk-flutter
+    anydesk
   ];
 
 }
