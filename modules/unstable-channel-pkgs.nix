@@ -14,8 +14,14 @@ in
     unstable.freeoffice
     unstable.gns3-gui
     unstable.gns3-server
-    unstable.lmstudio
     unstable.wpsoffice
+    unstable.code-cursor
+    #IDE
+    unstable.android-studio
+    unstable.android-tools
+    unstable.adb-sync
+    unstable.gradle
+
   ];
 }
 

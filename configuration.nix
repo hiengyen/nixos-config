@@ -2,17 +2,17 @@
 
 {
 
-  imports =
-    [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./modules/containers.nix
-      ./modules/unstable-channel-pkgs.nix
-      ./modules/2411-stable-pkgs.nix
-      ./modules/virtualization.nix
-      ./modules/vfio.nix
-      ./modules/exclude-gnome-pkgs.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./gardware-configuration.nix
+    ./modules/containers.nix
+    ./modules/unstable-channel-pkgs.nix
+    ./modules/2411-stable-pkgs.nix
+    ./modules/virtualization.nix
+    ./modules/vfio.nix
+    ./modules/exclude-gnome-pkgs.nix
+    ./modules/immich-app.nix
+  ];
 
   nixpkgs.config.allowUnsupportedSystem = true;
 
@@ -21,54 +21,16 @@
   # boot.kernelPackages = pkgs.linuxPackages-rt;
   # boot.kernelPackages = pkgs.linuxPackages_zen;
 
-
-
   # Bootloader.(systemd default)
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  services.xserver.excludePackages = with  pkgs; [ xterm ];
-
-
-  #Grub Bootloader # For dual Boot with Windows
-  # boot.loader = {
-  #   efi = {
-  #     canTouchEfiVariables = true;
-  #     # assuming /boot is the mount point of the  EFI partition in NixOS (as the installation section recommends).
-  #     efiSysMountPoint = "/boot";
-  #   };
-  #   grub = {
-  #     # despite what the configuration.nix manpage seems to indicate,
-  #     # as of release 17.09, setting device to "nodev" will still call
-  #     # `grub-install` if efiSupport is true
-  #     # (the devices list is not used by the EFI grub install,
-  #     # but must be set to some value in order to pass an assert in grub.nix)
-  #     devices = [ "nodev" ];
-  #     efiSupport = true;
-  #     enable = true;
-  #     # set $FS_UUID to the UUID of the EFI partition
-  #     extraEntries = ''
-  #       menuentry "Windows" {
-  #         insmod part_gpt
-  #         insmod fat
-  #         insmod search_fs_uuid
-  #         insmod chain
-  #         search --fs-uuid --set=root $FS_UUID
-  #         chainloader /EFI/Microsoft/Boot/bootmgfw.efi
-  #       }
-  #       menuentry "Reboot" {
-  #                   reboot
-  #       }
-  #       menuentry "Poweroff" {
-  #                   halt
-  #        }
-  #     '';
-  #   };
-  # };
-  #
-
+  services.xserver.excludePackages = with pkgs; [ xterm ];
 
   # Enabled Nix Flakes
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # Fix incorrect time when booting Windows
   time.hardwareClockInLocalTime = true;
@@ -144,7 +106,6 @@
   services.xserver.desktopManager.gnome.enable = true;
   services.displayManager.defaultSession = "gnome-xorg";
 
-
   #Enable the KDE Desktop Environment
   # services.displayManager.sddm.enable = true;
   # services.displayManager.sddm.wayland.enable = true;
@@ -156,9 +117,11 @@
   ## or this for seahorse
   # programs.ssh.askPassword = lib.mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
 
-
   # Install Displaylink Driver
-  services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
+  services.xserver.videoDrivers = [
+    "displaylink"
+    "modesetting"
+  ];
 
   ## Run binaries of different architecture
   boot.binfmt.emulatedSystems = [
@@ -166,7 +129,7 @@
     "riscv64-linux"
   ];
 
-  # Enable Flatpak 
+  # Enable Flatpak
   services.flatpak.enable = true;
 
   # Enable CUPS to print documents.
@@ -202,7 +165,15 @@
   users.users.hiengyen = {
     isNormalUser = true;
     description = "hiengyen";
-    extraGroups = [ "sudo" "networkmanager" "wheel" "libvirtd" "dialout" "audio" "kvm" ];
+    extraGroups = [
+      "sudo"
+      "networkmanager"
+      "wheel"
+      "libvirtd"
+      "dialout"
+      "audio"
+      "kvm"
+    ];
     # packages = with pkgs; [
     #  thunderbird
     # ];
@@ -231,13 +202,33 @@
   networking.firewall = {
     enable = true;
     allowedTCPPortRanges = [
-      { from = 1714; to = 1764; } # KDE Connect
+      {
+        from = 1714;
+        to = 1764;
+      } # KDE Connect
     ];
     allowedUDPPortRanges = [
-      { from = 1714; to = 1764; } # KDE Connect
+      {
+        from = 1714;
+        to = 1764;
+      } # KDE Connect
     ];
-    allowedTCPPorts = [ 8554 8889 1883 80 443 22 ];
-    allowedUDPPorts = [ 8554 8889 1883 80 443 22 ];
+    allowedTCPPorts = [
+      8554
+      8889
+      1883
+      80
+      443
+      22
+    ];
+    allowedUDPPorts = [
+      8554
+      8889
+      1883
+      80
+      443
+      22
+    ];
   };
 
   # networking.firewall.allowedTCPPorts = [80 443 22];

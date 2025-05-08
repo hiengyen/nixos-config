@@ -16,9 +16,9 @@
     qemu_test
     qemu_full
     qemu-utils
-    # uefi-run #Directly run UEFI applications in qemu
-    # OVMF
-    # edk2
+    uefi-run 
+    OVMF
+    edk2
     spice
     spice-gtk
     win-spice
@@ -89,7 +89,6 @@
     wl-clipboard
     xclip
     discord
-    putty
     neofetch
     kitty
     zsh
@@ -150,18 +149,15 @@
     #Programming Languages
     nodejs_20
     corepack # wrappers for npm, pnpm and Yarn 
+    ## Golang
     go
     gotools
+    ##Python
     python312
     python312Packages.pip
-    mosquitto # mqtt broker server
-    platformio-core # IOT development
     #Nix Language
     nil
     nixfmt-rfc-style
-
-
-
     # Rust & dependencies
     rustc
     rustup
@@ -184,6 +180,12 @@
     openboard
     rustdesk-flutter
     anydesk
+    #VPN app
+    gui-for-singbox
+    
+    # Tools Immich
+    immich-go
+    immich-cli
   ];
 
 }
