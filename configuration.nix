@@ -4,7 +4,7 @@
 
   imports = [
     # Include the results of the hardware scan.
-    ./gardware-configuration.nix
+    ./hardware-configuration.nix
     ./modules/containers.nix
     ./modules/unstable-channel-pkgs.nix
     ./modules/2411-stable-pkgs.nix
@@ -13,6 +13,8 @@
     ./modules/exclude-gnome-pkgs.nix
     ./modules/immich-app.nix
   ];
+  #This services to using X11 gestures
+  services.touchegg.enable = true;
 
   nixpkgs.config.allowUnsupportedSystem = true;
 
@@ -27,10 +29,7 @@
   services.xserver.excludePackages = with pkgs; [ xterm ];
 
   # Enabled Nix Flakes
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Fix incorrect time when booting Windows
   time.hardwareClockInLocalTime = true;
@@ -43,7 +42,8 @@
 
   #Enable Bluetooth
   hardware.bluetooth.enable = true; # enables support for Bluetooth
-  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
+  hardware.bluetooth.powerOnBoot =
+    true; # powers up the default Bluetooth controller on boot
 
   # Enable/Set Default Zsh
   programs.zsh.enable = true;
@@ -77,10 +77,7 @@
   i18n.inputMethod = {
     enable = true;
     type = "fcitx5";
-    fcitx5.addons = with pkgs; [
-      fcitx5-m17n
-      libsForQt5.fcitx5-unikey
-    ];
+    fcitx5.addons = with pkgs; [ fcitx5-m17n libsForQt5.fcitx5-unikey ];
   };
 
   #Install fonts
@@ -118,16 +115,10 @@
   # programs.ssh.askPassword = lib.mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
 
   # Install Displaylink Driver
-  services.xserver.videoDrivers = [
-    "displaylink"
-    "modesetting"
-  ];
+  services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
 
   ## Run binaries of different architecture
-  boot.binfmt.emulatedSystems = [
-    "aarch64-linux"
-    "riscv64-linux"
-  ];
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" "riscv64-linux" ];
 
   # Enable Flatpak
   services.flatpak.enable = true;
@@ -165,15 +156,8 @@
   users.users.hiengyen = {
     isNormalUser = true;
     description = "hiengyen";
-    extraGroups = [
-      "sudo"
-      "networkmanager"
-      "wheel"
-      "libvirtd"
-      "dialout"
-      "audio"
-      "kvm"
-    ];
+    extraGroups =
+      [ "sudo" "networkmanager" "wheel" "libvirtd" "dialout" "audio" "kvm" ];
     # packages = with pkgs; [
     #  thunderbird
     # ];
@@ -201,34 +185,18 @@
   # Open ports in the firewall.
   networking.firewall = {
     enable = true;
-    allowedTCPPortRanges = [
-      {
-        from = 1714;
-        to = 1764;
-      } # KDE Connect
-    ];
-    allowedUDPPortRanges = [
-      {
-        from = 1714;
-        to = 1764;
-      } # KDE Connect
-    ];
-    allowedTCPPorts = [
-      8554
-      8889
-      1883
-      80
-      443
-      22
-    ];
-    allowedUDPPorts = [
-      8554
-      8889
-      1883
-      80
-      443
-      22
-    ];
+    allowedTCPPortRanges = [{
+      from = 1714;
+      to = 1764;
+    } # KDE Connect
+      ];
+    allowedUDPPortRanges = [{
+      from = 1714;
+      to = 1764;
+    } # KDE Connect
+      ];
+    allowedTCPPorts = [ 8554 8889 2283 1883 80 443 22 ];
+    allowedUDPPorts = [ 8554 8889 2283 1883 80 443 22 ];
   };
 
   # networking.firewall.allowedTCPPorts = [80 443 22];

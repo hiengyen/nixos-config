@@ -16,18 +16,18 @@
     qemu_test
     qemu_full
     qemu-utils
-    uefi-run 
+    uefi-run
     OVMF
     edk2
     spice
     spice-gtk
     win-spice
     x11spice
-    libguestfs #Tools for accessing and modifying virtual machine disk images
+    libguestfs # Tools for accessing and modifying virtual machine disk images
     spice-vdagent # Enhanced SPICE integration for linux QEMU guest
     virglrenderer # A virtual 3D GPU library that allows a qemu guest to use the host GPU for accelerated 3D rendering
-    ubootQemuX86 #Boot for embedded system
-    xorg.xf86videoqxl #Xorg X11 qxl video driver
+    ubootQemuX86 # Boot for embedded system
+    xorg.xf86videoqxl # Xorg X11 qxl video driver
     virtiofsd
     virtio-win
 
@@ -47,6 +47,7 @@
     gnomeExtensions.gsconnect
     gnome-tweaks
     gnomeExtensions.display-scale-switcher
+    gnomeExtensions.x11-gestures
 
     #KDE packages
     # kdePackages.kdeconnect-kde
@@ -100,7 +101,6 @@
     p7zip
     openssl
 
-
     jq
     imagemagick
     distrobox
@@ -120,13 +120,13 @@
     obsidian
     stow
     brave
-    gittyup # Git client 
+    gittyup # Git client
     # wineWowPackages.stable
     # winetricks
     freerdp # Remote Desktop Protocol Client
     rpi-imager
     hardinfo
-    samba4Full #The standard Windows interoperability suite of programs for Linux and Unix
+    samba4Full # The standard Windows interoperability suite of programs for Linux and Unix
     xorg.libX11
     signal-desktop
     telegram-desktop
@@ -138,7 +138,6 @@
     screen
     minicom
 
-
     # Lazy.nvim dependencies
     fzf
     fzf-zsh
@@ -148,7 +147,7 @@
     luajitPackages.luarocks
     #Programming Languages
     nodejs_20
-    corepack # wrappers for npm, pnpm and Yarn 
+    corepack # wrappers for npm, pnpm and Yarn
     ## Golang
     go
     gotools
@@ -170,7 +169,7 @@
     #Themes
     yaru-theme
 
-    #AI & Cloud & Tools 
+    #AI & Cloud & Tools
     texliveTeTeX
     drawio
     gimp-with-plugins
@@ -182,7 +181,7 @@
     anydesk
     #VPN app
     gui-for-singbox
-    
+
     # Tools Immich
     immich-go
     immich-cli
