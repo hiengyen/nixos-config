@@ -48,6 +48,7 @@
     gnome-tweaks
     gnomeExtensions.display-scale-switcher
     gnomeExtensions.x11-gestures
+    gnomeExtensions.top-panel-workspace-scroll
 
     #KDE packages
     # kdePackages.kdeconnect-kde
@@ -89,7 +90,6 @@
     curl
     wl-clipboard
     xclip
-    discord
     neofetch
     kitty
     zsh
@@ -121,15 +121,11 @@
     stow
     brave
     gittyup # Git client
-    # wineWowPackages.stable
-    # winetricks
     freerdp # Remote Desktop Protocol Client
     rpi-imager
     hardinfo
     samba4Full # The standard Windows interoperability suite of programs for Linux and Unix
     xorg.libX11
-    signal-desktop
-    telegram-desktop
 
     gnome-keyring
     seahorse
@@ -145,26 +141,6 @@
     ripgrep
     nerdfonts
     luajitPackages.luarocks
-    #Programming Languages
-    nodejs_20
-    corepack # wrappers for npm, pnpm and Yarn
-    ## Golang
-    go
-    gotools
-    ##Python
-    python312
-    python312Packages.pip
-    #Nix Language
-    nil
-    nixfmt-rfc-style
-    # Rust & dependencies
-    rustc
-    rustup
-    cargo
-    #Java
-    maven
-    jdk
-    jre8
 
     #Themes
     yaru-theme
@@ -173,9 +149,6 @@
     texliveTeTeX
     drawio
     gimp-with-plugins
-    wineWowPackages.stable
-    wineWowPackages.waylandFull
-    winetricks
     openboard
     rustdesk-flutter
     anydesk
@@ -185,6 +158,44 @@
     # Tools Immich
     immich-go
     immich-cli
+    # chat app 
+    discord
+    slack
+    # chat app 
+    discord
+    slack
+    signal-desktop
+    telegram-desktop
+    #Wine 
+    wineWowPackages.unstableFull
+    wineWowPackages.fonts
+    winetricks
+    q4wine
+    #Graphic Driver
+    mesa
+    xorg.xf86videointel
+
+    #Programming Languages
+    python312
+    python312Packages.pip
+    #Javascipt
+    nodejs_20
+    corepack # wrappers for npm, pnpm and Yarn
+    #Go
+    go
+    gotools
+    #Nix 
+    nil
+    nixfmt-rfc-style
+    # Rust
+    rustc
+    rustup
+    cargo
+    #Java
+    maven
+    jdk
+    jre8
+
   ];
 
 }

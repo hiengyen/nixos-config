@@ -18,6 +18,7 @@
 
   nixpkgs.config.allowUnsupportedSystem = true;
 
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   # boot.kernelPackages = pkgs.linuxPackages_6_10;
   # boot.kernelPackages = pkgs.linuxPackages-rt_latest;
   # boot.kernelPackages = pkgs.linuxPackages-rt;
@@ -70,9 +71,9 @@
   # i18n.inputMethod = {
   #   enable = true;
   #   type = "ibus";
-  #   ibus.engines = with pkgs.ibus-engines; [ bamboo m17n];
+  #   ibus.engines = with pkgs.ibus-engines; [ bamboo m17n ];
   # };
-
+  #
   # Enable InputMethod Fcitx5
   i18n.inputMethod = {
     enable = true;
@@ -97,11 +98,20 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-  services.displayManager.defaultSession = "gnome-xorg";
+  services.xserver.desktopManager.gnome = {
+    enable = true;
+    # extraGSettingsOverridePackages = [ pkgs.mutter ];
+    # extraGSettingsOverrides = ''
+    #   [org.gnome.mutter]
+    #   experimental-features=['scale-monitor-framebuffer']
+    # '';
+  };
+  # environment.sessionVariables = {
+  #   MUTTER_DEBUG_ENABLE_FRACTIONAL_SCALING = "1";
+  # };
+  services.displayManager.defaultSession = "gnome";
 
   #Enable the KDE Desktop Environment
   # services.displayManager.sddm.enable = true;
@@ -115,7 +125,7 @@
   # programs.ssh.askPassword = lib.mkForce "${pkgs.seahorse}/libexec/seahorse/ssh-askpass";
 
   # Install Displaylink Driver
-  services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
+  # services.xserver.videoDrivers = [ "displaylink" "modesetting" ]; this oftion do not work with latest kernel 
 
   ## Run binaries of different architecture
   boot.binfmt.emulatedSystems = [ "aarch64-linux" "riscv64-linux" ];
