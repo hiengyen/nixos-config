@@ -123,7 +123,7 @@
     gittyup # Git client
     freerdp # Remote Desktop Protocol Client
     rpi-imager
-    hardinfo
+    hardinfo2
     xorg.libX11
 
     gnome-keyring
@@ -138,7 +138,6 @@
     fzf-zsh
     fd
     ripgrep
-    nerdfonts
     luajitPackages.luarocks
 
     #Themes
@@ -197,7 +196,10 @@
     #Clipboard via ssh 
     lemonade
     google-chrome
+    #Notion Workspace 
+    notion-app
 
   ];
 
 }
+

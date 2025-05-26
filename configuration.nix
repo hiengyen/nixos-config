@@ -7,7 +7,7 @@
     ./hardware-configuration.nix
     ./modules/containers.nix
     ./modules/unstable-channel-pkgs.nix
-    ./modules/2411-stable-pkgs.nix
+    ./modules/25.05-stable-pkgs.nix
     ./modules/virtualization.nix
     ./modules/vfio.nix
     ./modules/exclude-gnome-pkgs.nix
@@ -19,10 +19,14 @@
   nixpkgs.config.allowUnsupportedSystem = true;
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
-  # boot.kernelPackages = pkgs.linuxPackages_6_10;
-  # boot.kernelPackages = pkgs.linuxPackages-rt_latest;
-  # boot.kernelPackages = pkgs.linuxPackages-rt;
-  # boot.kernelPackages = pkgs.linuxPackages_zen;
+  boot.kernelPatches = [{
+    name = "Rust Support";
+    patch = null;
+    features = { rust = true; };
+  }];
+
+  #Enable SAMBA
+  services.samba.enable = true;
 
   # Bootloader.(systemd default)
   boot.loader.systemd-boot.enable = true;
@@ -81,6 +85,20 @@
     fcitx5.addons = with pkgs; [ fcitx5-m17n libsForQt5.fcitx5-unikey ];
   };
 
+  # Enable OpenGL accelerate for Gamming 
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-compute-runtime-legacy1 # for previous generations Intel 11, 9, 8
+      intel-media-driver
+      mesa
+      xorg.xf86videointel
+      vpl-gpu-rt # or intel-media-sdk for QSV
+    ];
+  };
+  programs.gamemode.enable = true; # Enable pejrformance for Gamming
+
+  nixpkgs.config.permittedInsecurePackages = [ "electron-33.4.11" ];
   #Install fonts
   fonts.packages = with pkgs; [
     noto-fonts
@@ -90,27 +108,29 @@
     mplus-outline-fonts.githubRelease
     dina-font
     proggyfonts
-    vistafonts
+    vista-fonts
     corefonts
-    fira-code-nerdfont
-
+    nerd-fonts.ubuntu-mono
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.symbols-only
   ];
+
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  # Enable the GNOME Desktop Environment.
+  # Enable the COSMIC Desktop Environment
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome = {
     enable = true;
-    # extraGSettingsOverridePackages = [ pkgs.mutter ];
-    # extraGSettingsOverrides = ''
-    #   [org.gnome.mutter]
-    #   experimental-features=['scale-monitor-framebuffer']
-    # '';
+    extraGSettingsOverridePackages = [ pkgs.mutter ];
+    extraGSettingsOverrides = ''
+      [org.gnome.mutter]
+      experimental-features=['scale-monitor-framebuffer']
+    '';
   };
-  # environment.sessionVariables = {
-  #   MUTTER_DEBUG_ENABLE_FRACTIONAL_SCALING = "1";
-  # };
+  environment.sessionVariables = {
+    MUTTER_DEBUG_ENABLE_FRACTIONAL_SCALING = "1";
+  };
   services.displayManager.defaultSession = "gnome";
 
   #Enable the KDE Desktop Environment
@@ -141,7 +161,7 @@
   services.teamviewer.enable = true;
 
   # Enable sound with Pipewire.
-  hardware.pulseaudio.enable = false; # turn off Pulse audio
+  services.pulseaudio.enable = false; # turn off Pulse audio
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -157,7 +177,7 @@
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
-  services.libinput.enable = true;
+  # services.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwdstable’.
   # users.users.hiengyen.group = "hiengyen";
@@ -214,5 +234,5 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.05";
 }

@@ -3,6 +3,13 @@
   ## XEN 
   # virtualisation.xen.enable = true;
 
+  # Enable iGVT-g - technology 'slice iGPU 
+  virtualisation.kvmgt.enable = true;
+  ## older Intel GPU 
+  # boot.extraModprobeConfig = "options i915 enable_guc=2";
+  # boot.extraModprobeConfig = "options kvm_intel nested=1";
+
+
   ###Libvirtd,QEMU,KVM
 
   systemd.tmpfiles.rules = [ "L+ /var/lib/qemu/firmware - - - - ${pkgs.qemu}/share/qemu/firmware" ];
@@ -33,7 +40,6 @@
       };
     };
   };
-  boot.extraModprobeConfig = "options kvm_intel nested=1";
   #Install Hypervisor
   boot.kernelParams = [ "intel_iommu=on" ];
   #Install Hypervisor

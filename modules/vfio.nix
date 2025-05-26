@@ -18,6 +18,7 @@ in
           "vfio"
           "vfio_iommu_type1"
           "vfio_virqfd"
+          "i915"
 
           # "nvidia"
           # "nvidia_modeset"
@@ -28,6 +29,9 @@ in
         kernelParams = [
           # enable IOMMU
           "intel_iommu=on"
+          "iommu=pt" 
+          "i915.enable_gvt=1"
+
         ] ++ lib.optional cfg.enable
           # isolate the GPU
           ("vfio-pci.ids=" + lib.concatStringsSep "," gpuIDs);
