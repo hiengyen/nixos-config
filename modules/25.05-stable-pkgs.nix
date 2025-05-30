@@ -38,17 +38,16 @@
     gnomeExtensions.caffeine
     gnomeExtensions.vitals
     gnomeExtensions.appindicator
-    gnomeExtensions.astra-monitor
-    gnomeExtensions.miniview
     gnomeExtensions.privacy-settings-menu
     gnomeExtensions.logo-menu
     gnomeExtensions.just-perfection
     gnomeExtensions.gnome-40-ui-improvements
     gnomeExtensions.gsconnect
-    gnome-tweaks
-    gnomeExtensions.display-scale-switcher
     gnomeExtensions.x11-gestures
     gnomeExtensions.top-panel-workspace-scroll
+    gnomeExtensions.launch-new-instance
+    gnome-tweaks
+
 
     #KDE packages
     # kdePackages.kdeconnect-kde
@@ -150,8 +149,6 @@
     openboard
     rustdesk-flutter
     anydesk
-    #VPN app
-    gui-for-singbox
 
     # Tools Immich
     immich-go
@@ -199,6 +196,10 @@
     #Notion Workspace 
     notion-app
 
+    #VPN app
+    gui-for-singbox
+    # Ollama 
+    ollama
   ];
 
 }

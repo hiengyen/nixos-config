@@ -11,7 +11,6 @@
     ./modules/virtualization.nix
     ./modules/vfio.nix
     ./modules/exclude-gnome-pkgs.nix
-    ./modules/immich-app.nix
   ];
   #This services to using X11 gestures
   services.touchegg.enable = true;
@@ -115,6 +114,15 @@
     nerd-fonts.symbols-only
   ];
 
+  # Enable Ollama systemd services 
+  services.ollama = {
+    enable = true;
+    # Optional: preload models, see https://ollama.com/library
+    loadModels = [ "llama3.2:3b" "deepseek-r1:1.5b"];
+  };
+
+  # Singbox - VPN service 
+  services.sing-box.enable = true;
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
