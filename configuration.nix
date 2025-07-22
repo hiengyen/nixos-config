@@ -24,13 +24,28 @@
     features = { rust = true; };
   }];
 
+  # Enabling hyprlnd on NixOS
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
+
+  #Config logind services
+  services.logind= {
+    powerKey = "ignore";
+    lidSwitch = "ignore";
+    lidSwitchDocked = "ignore";
+    lidSwitchExternalPower = "ignore";
+    # killUserProcesses = false;
+  };
+
   #Enable SAMBA
   services.samba.enable = true;
 
   # Bootloader.(systemd default)
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  services.xserver.excludePackages = with pkgs; [ xterm ];
+
 
   # Enabled Nix Flakes
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -120,6 +135,11 @@
     # Optional: preload models, see https://ollama.com/library
     loadModels = [ "llama3.2:3b" "deepseek-r1:1.5b"];
   };
+  # Enable OpenWebUI GUI for ollama models
+  services.open-webui = {
+    enable = true;
+    port = 3000;
+  };
 
   # Singbox - VPN service 
   services.sing-box.enable = true;
@@ -185,7 +205,7 @@
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
-  # services.libinput.enable = true;
+  services.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwdstable’.
   # users.users.hiengyen.group = "hiengyen";
@@ -233,8 +253,8 @@
       to = 1764;
     } # KDE Connect
       ];
-    allowedTCPPorts = [ 8554 8889 2283 1883 80 443 22 ];
-    allowedUDPPorts = [ 8554 8889 2283 1883 80 443 22 ];
+    allowedTCPPorts = [ 3306 8554 8889 2283 1883 80 443 22 ];
+    allowedUDPPorts = [ 3306 8554 8889 2283 1883 80 443 22 ];
   };
 
   # networking.firewall.allowedTCPPorts = [80 443 22];

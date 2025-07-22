@@ -30,6 +30,7 @@
     xorg.xf86videoqxl # Xorg X11 qxl video driver
     virtiofsd
     virtio-win
+    
 
     # Gnome Extensions
     # gnomeExtensions.remmina-search-provider
@@ -64,6 +65,7 @@
     patchelfUnstable
     pciutils
     busybox
+    zip
     unzip
     unrar-wrapper
     usbutils
@@ -161,6 +163,7 @@
     slack
     signal-desktop
     telegram-desktop
+    caprine # Messeger client
     #Wine 
     wineWowPackages.unstableFull
     wineWowPackages.fonts
@@ -170,6 +173,8 @@
     #Programming Languages
     python312
     python312Packages.pip
+    python312Packages.diagrams
+    pyenv
     #Javascipt&&Typescript
     nodejs_22
     corepack # wrappers for npm, pnpm and Yarn
@@ -200,6 +205,16 @@
     gui-for-singbox
     # Ollama 
     ollama
+    # Graph viztualization tools
+    graphviz
+    fragments
+    realvnc-vnc-viewer
+
+    # Zoom meeting
+    zoom-us
+    # Terraform
+    terraform
+    mysql80
   ];
 
 }
