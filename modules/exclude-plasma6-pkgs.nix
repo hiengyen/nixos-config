@@ -9,7 +9,6 @@
     kdePackages.spectacle
     kdePackages.discover
     kdePackages.kwallet
-
   ]);
 
 }

@@ -15,18 +15,15 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
-
-  fileSystems."/" =
-    {
-      device = "/dev/disk/by-uuid/bcac8b23-826e-49a9-a6f1-0c9768b079f3";
+ fileSystems."/" =
+    { device = "/dev/disk/by-uuid/867ccca8-1d31-431c-bf2d-bf3244f30745";
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
-    {
-      device = "/dev/disk/by-uuid/1DED-EB9B";
+    { device = "/dev/disk/by-uuid/7B1A-AB5C";
       fsType = "vfat";
-      options = [ "fmask=0022" "dmask=0022" ];
+      options = [ "fmask=0077" "dmask=0077" ];
     };
 
   swapDevices = [{

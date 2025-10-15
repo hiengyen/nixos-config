@@ -10,7 +10,6 @@
     #   #   qemu-system-x86_64 \ #   -bios ${pkgs.OVMF.fd}/FV/OVMF.fd \
     #   #   "$@"
     #   # '')
-
     qemu
     qemu_kvm
     qemu_test
@@ -30,7 +29,7 @@
     xorg.xf86videoqxl # Xorg X11 qxl video driver
     virtiofsd
     virtio-win
-    
+    sdparm
 
     # Gnome Extensions
     # gnomeExtensions.remmina-search-provider
@@ -64,6 +63,7 @@
     pkg-config
     patchelfUnstable
     pciutils
+    dmidecode
     busybox
     zip
     unzip
@@ -86,7 +86,7 @@
     gmp
     libmpc
     haskellPackages.gdp
-    gnumake42 # make
+    gnumake42 
     perl
     curl
     wl-clipboard
@@ -105,7 +105,7 @@
     jq
     imagemagick
     distrobox
-    dbeaver-bin
+    #dbeaver-bin
     # anki-bin
     mpv
     mplayer
@@ -113,14 +113,14 @@
     tmux
     tmuxifier
     obs-studio
-    jetbrains.idea-community-bin
+    #jetbrains.idea-community-bin
     # jetbrains.pycharm-community-src
     teamviewer
     gparted
     mongodb-compass
-    obsidian
+    #obsidian
     stow
-    brave
+    #brave
     gittyup # Git client
     freerdp # Remote Desktop Protocol Client
     rpi-imager
@@ -133,6 +133,8 @@
     socat
     screen
     minicom
+    #File system
+    ntfs3g
 
     # Lazy.nvim dependencies
     fzf
@@ -163,13 +165,13 @@
     slack
     signal-desktop
     telegram-desktop
-    caprine # Messeger client
-    #Wine 
-    wineWowPackages.unstableFull
-    wineWowPackages.fonts
-    winetricks
-    q4wine
+    viber
 
+    #Wine 
+    # wineWowPackages.unstableFull
+    # wineWowPackages.fonts
+    # winetricks
+    # q4wine
     #Programming Languages
     python312
     python312Packages.pip
@@ -177,6 +179,7 @@
     pyenv
     #Javascipt&&Typescript
     nodejs_22
+    bun
     corepack # wrappers for npm, pnpm and Yarn
     #Go
     go
@@ -192,29 +195,36 @@
     maven
     jdk
     jre8
-
-    #Gaming 
-    lutris-unwrapped
+    #Testing GPU
+    lshw
+    lshw-gui
+    virtualgl
+    mesa-demos
+    vulkan-tools
+    radeontop
     #Clipboard via ssh 
     lemonade
     google-chrome
-    #Notion Workspace 
-    notion-app
-
     #VPN app
     gui-for-singbox
-    # Ollama 
-    ollama
     # Graph viztualization tools
     graphviz
     fragments
     realvnc-vnc-viewer
-
     # Zoom meeting
-    zoom-us
-    # Terraform
+    #zoom-us
+    # IaC Tools 
     terraform
-    mysql80
+    ansible
+    #mysql80
+    ## KDE packages alternative
+    libsForQt5.okular
+    #Graphical configuration utility for RouterOS-based devices
+    winbox4
+    #rk588 developtool 
+    rkdeveloptool
+    wireguard-tools
+    smartmontools
   ];
 
 }

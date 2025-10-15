@@ -7,11 +7,13 @@
     ./hardware-configuration.nix
     ./modules/containers.nix
     ./modules/unstable-channel-pkgs.nix
+    ./modules/nix-ld-channel-pkgs.nix
     ./modules/25.05-stable-pkgs.nix
-    ./modules/virtualization.nix
+    # ./modules/virtualization.nix
     ./modules/vfio.nix
     ./modules/exclude-gnome-pkgs.nix
   ];
+
   #This services to using X11 gestures
   services.touchegg.enable = true;
 
@@ -91,7 +93,7 @@
   #   type = "ibus";
   #   ibus.engines = with pkgs.ibus-engines; [ bamboo m17n ];
   # };
-  #
+  
   # Enable InputMethod Fcitx5
   i18n.inputMethod = {
     enable = true;
@@ -110,6 +112,7 @@
       vpl-gpu-rt # or intel-media-sdk for QSV
     ];
   };
+
   programs.gamemode.enable = true; # Enable pejrformance for Gamming
 
   nixpkgs.config.permittedInsecurePackages = [ "electron-33.4.11" ];
@@ -133,7 +136,7 @@
   services.ollama = {
     enable = true;
     # Optional: preload models, see https://ollama.com/library
-    loadModels = [ "llama3.2:3b" "deepseek-r1:1.5b"];
+    loadModels = [ "gpt-oss" "deepseek-r1:1.5b"];
   };
   # Enable OpenWebUI GUI for ollama models
   services.open-webui = {
@@ -256,11 +259,6 @@
     allowedTCPPorts = [ 3306 8554 8889 2283 1883 80 443 22 ];
     allowedUDPPorts = [ 3306 8554 8889 2283 1883 80 443 22 ];
   };
-
-  # networking.firewall.allowedTCPPorts = [80 443 22];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   system.stateVersion = "25.05";
 }
