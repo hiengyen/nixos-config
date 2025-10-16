@@ -9,7 +9,7 @@
     ./modules/unstable-channel-pkgs.nix
     ./modules/nix-ld-channel-pkgs.nix
     ./modules/25.05-stable-pkgs.nix
-    # ./modules/virtualization.nix
+    ./modules/virtualization.nix
     ./modules/vfio.nix
     ./modules/exclude-gnome-pkgs.nix
   ];

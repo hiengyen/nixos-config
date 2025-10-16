@@ -19,27 +19,28 @@
   ];
   # Install Virt-manager
   programs.virt-manager.enable = true;
-
+  users.users.hiengyen.extraGroups = [ "libvirtd" ];
   virtualisation.libvirtd = {
     enable = true;
     qemu = {
       package = pkgs.qemu_kvm;
       runAsRoot = true;
       swtpm.enable = true;
-      ovmf = {
-        enable = true;
-        packages = [
-          (pkgs.OVMF.override {
-            secureBoot = true;
-            tpmSupport = true;
-          }).fd
-          # pkgs.pkgsCross.aarch64-multiplatform.OVMF.fd #AAVMF for arm 64
-          # pkgs.OVMFFull.fd
-
-        ];
-      };
+      # ovmf = {
+      #   enable = true;
+      #   packages = [
+      #     (pkgs.OVMF.override {
+      #       secureBoot = true;
+      #       tpmSupport = true;
+      #     }).fd
+      #     # pkgs.pkgsCross.aarch64-multiplatform.OVMF.fd #AAVMF for arm 64
+      #     # pkgs.OVMFFull.fd
+      #
+      #   ];
+      # };
     };
   };
+
   #Install Hypervisor
   boot.kernelParams = [ "intel_iommu=on" ];
   #Install Hypervisor
@@ -48,9 +49,4 @@
   services.qemuGuest.enable = true;
   services.spice-vdagentd.enable = true;
   hardware.graphics.enable = true; # 24.05 :   hardware.opengl.enable = true;
-
-  ### Install VMware
-  # virtualisation.vmware.host.enable = true;
-  # virtualisation.vmware.guest.enable = true;
-
 }
